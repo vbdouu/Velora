@@ -1,0 +1,4 @@
+# Node.js dependencies (too heavy, recreated with npm install)
+# Sensitive variables (passwords, keys, etc.)
+node_modules/
+.env

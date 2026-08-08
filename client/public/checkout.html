@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement — Velora</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script defer src="/js/api.js"></script>
+    <script defer src="/js/auth.js"></script>
+    <script defer src="/js/toast.js"></script>
+    <script defer src="/js/checkout.js"></script>
+</head>
+<body>
+    <!-- Checkout has a minimalist header without navigation for focus -->
+    <header class="site-header" style="border-bottom: 1px solid var(--line);">
+        <div class="container header-inner" style="justify-content: center;">
+            <a href="/" class="brand">VELORA</a>
+        </div>
+    </header>
+
+    <main class="page-main animate-fade-in" style="padding: 60px 0;">
+        <div class="container">
+            <div id="checkout-messages"></div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px;">
+                <!-- Left: Form -->
+                <div>
+                    <h1 style="font-size: 2rem; margin-bottom: 40px;">Expédition</h1>
+                    
+                    <form id="checkout-form">
+                        <div class="form-group">
+                            <label for="shipping_address">Adresse de livraison (Rue, Bâtiment...)</label>
+                            <textarea id="shipping_address" name="shipping_address" required placeholder="Ex: 12 Rue de la Paix" style="min-height: 80px;"></textarea>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+                            <div class="form-group">
+                                <label for="shipping_wilaya">Wilaya</label>
+                                <select id="shipping_wilaya" name="shipping_wilaya" required>
+                                    <option value="" disabled selected>Sélectionnez une wilaya</option>
+                                    <option value="16">16 - Alger (400 DA)</option>
+                                    <option value="09">09 - Blida (500 DA)</option>
+                                    <option value="31">31 - Oran (800 DA)</option>
+                                    <option value="25">25 - Constantine (800 DA)</option>
+                                    <option value="23">23 - Annaba (800 DA)</option>
+                                    <option value="other">Autre wilaya (1000 DA)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="shipping_city">Commune</label>
+                                <input type="text" id="shipping_city" name="shipping_city" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="shipping_phone">Numéro de téléphone *</label>
+                            <input type="tel" id="shipping_phone" name="shipping_phone" required placeholder="0555000000">
+                        </div>
+
+                        <div class="card" style="padding: 20px; border: 1px solid var(--line); margin-bottom: 24px;">
+                            <h3 style="font-size: 0.95rem; margin-bottom: 12px; font-weight: 500;">Type de livraison</h3>
+                            <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; cursor: pointer;">
+                                    <input type="radio" name="shipping_type" value="home" checked style="accent-color: var(--ink);">
+                                    <span>À domicile</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; cursor: pointer;">
+                                    <input type="radio" name="shipping_type" value="desk" style="accent-color: var(--ink);">
+                                    <span>Bureau / StopDesk</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="card" style="padding: 20px; border: 1px solid var(--line); margin-bottom: 40px;">
+                            <h3 style="font-size: 0.95rem; margin-bottom: 8px; font-weight: 500;">Méthode de paiement</h3>
+                            <div style="display: flex; align-items: center; gap: 12px; margin-top: 12px;">
+                                <input type="radio" id="payment_cod" name="payment" checked style="accent-color: var(--ink);">
+                                <label for="payment_cod" style="font-size: 0.95rem;">Paiement à la livraison (Cash on Delivery)</label>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <a href="/cart.html" style="font-size: 0.875rem; text-decoration: underline;">&larr; Retour au panier</a>
+                            <button type="submit" class="btn primary" id="btn-submit-order">Confirmer la commande</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Right: Summary -->
+                <div style="background: var(--cream); padding: 40px;">
+                    <h2 style="font-size: 1.25rem; margin-bottom: 32px;">Résumé de la commande</h2>
+                    
+                    <div id="checkout-items" style="display: flex; flex-direction: column; gap: 24px; margin-bottom: 32px; max-height: 400px; overflow-y: auto;">
+                        <div class="loading-state">Chargement...</div>
+                    </div>
+                    
+                    <div style="border-top: 1px solid var(--line); padding-top: 24px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                            <span class="muted">Sous-total</span>
+                            <span id="checkout-subtotal" style="color: var(--ink);">—</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 24px;">
+                            <span class="muted">Livraison</span>
+                            <span id="checkout-shipping-fee" style="color: var(--ink);">—</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding-top: 24px; border-top: 1px solid var(--line);">
+                            <span style="font-size: 1.25rem; font-weight: 500;">Total</span>
+                            <span id="checkout-total" style="font-size: 1.5rem; font-weight: 500;">—</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

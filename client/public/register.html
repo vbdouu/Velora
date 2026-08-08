@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Créez votre compte Velora — rejoignez la communauté des passionnées de bijoux fins.">
+  <title>Créer un compte — Velora</title>
+  <link rel="icon" type="image/svg+xml" href="/images/defaults/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css">
+  <script defer src="/js/api.js"></script>
+  <script defer src="/js/auth.js"></script>
+  <script defer src="/js/toast.js"></script>
+  <script defer src="/js/register.js"></script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <div class="auth-layout">
+
+    <!-- ── Left: Full-Bleed Jewelry Photo ── -->
+    <div class="auth-image-panel">
+      <a class="auth-panel-brand" href="/index.html">VELORA<span>.</span></a>
+      <img
+        class="auth-image"
+        src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1400&auto=format&fit=crop&q=90&crop=focalpoint&fp-y=0.4"
+        alt="Collection de bijoux Velora"
+        loading="eager"
+      >
+      <div class="auth-image-overlay">
+        <div class="auth-gold-rule"></div>
+        <div class="auth-image-quote">
+          <blockquote>
+            Rejoignez des milliers de femmes qui ont choisi de s'offrir ce qu'il y a de mieux.
+          </blockquote>
+          <cite>Maison Velora</cite>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Right: Dark Premium Form (Compact 2-Column Grid) ── -->
+    <div class="auth-form-panel">
+      <div class="auth-form-inner">
+
+        <div class="auth-anim-1">
+          <p class="auth-eyebrow">Rejoindre Velora</p>
+          <h1 class="auth-heading">Créer un compte</h1>
+          <p class="auth-subheading">Accédez à vos commandes, favoris et offres exclusives.</p>
+        </div>
+
+        <div class="auth-alert" id="register-messages"></div>
+
+        <form class="auth-form auth-anim-2" id="register-form" novalidate>
+
+          <div class="auth-form-row">
+            <div class="auth-field">
+              <label class="auth-field-label" for="name">Prénom et nom</label>
+              <div class="auth-field-input-wrap">
+                <input type="text" id="name" name="name" required autocomplete="name" placeholder="Sophie Martin">
+                <span class="auth-field-line"></span>
+              </div>
+            </div>
+
+            <div class="auth-field">
+              <label class="auth-field-label" for="phone">Téléphone</label>
+              <div class="auth-field-input-wrap">
+                <input type="tel" id="phone" name="phone" required autocomplete="tel" placeholder="+213 6XX XXX XXX">
+                <span class="auth-field-line"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="auth-form-row">
+            <div class="auth-field">
+              <label class="auth-field-label" for="email">Adresse e-mail</label>
+              <div class="auth-field-input-wrap">
+                <input type="email" id="email" name="email" required autocomplete="email" placeholder="votre@email.com">
+                <span class="auth-field-line"></span>
+              </div>
+            </div>
+
+            <div class="auth-field">
+              <label class="auth-field-label" for="password">Mot de passe</label>
+              <div class="auth-field-input-wrap">
+                <input type="password" id="password" name="password" required autocomplete="new-password" placeholder="Min. 8 caractères">
+                <button type="button" class="auth-toggle-pwd" id="toggle-pwd-btn" aria-label="Afficher le mot de passe">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+                <span class="auth-field-line"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="auth-anim-3">
+            <button type="submit" class="auth-submit-btn">Créer mon compte</button>
+          </div>
+
+          <p class="auth-terms-note">
+            En créant un compte, vous acceptez notre 
+            <a href="/confidentialite.html" target="_blank">Politique de Confidentialité</a> 
+            &amp; nos <a href="/livraison.html" target="_blank">Conditions</a>.
+          </p>
+
+        </form>
+
+        <div class="auth-footer-link auth-anim-4">
+          Déjà membre ? <a href="/login.html">Se connecter</a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div id="site-footer" style="display: none;"></div>
+</body>
+</html>

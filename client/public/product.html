@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détail du bijou — Velora</title>
+  <link rel="icon" type="image/svg+xml" href="/images/defaults/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css">
+  <script defer src="/js/api.js"></script>
+  <script defer src="/js/auth.js"></script>
+  <script defer src="/js/toast.js"></script>
+  <script defer src="/js/product.js"></script>
+</head>
+<body data-active="shop">
+  <div id="site-header"></div>
+
+  <main class="page-main">
+    <div class="container">
+
+      <!-- Breadcrumb injected by product.js -->
+      <nav class="breadcrumb" id="product-breadcrumb" aria-label="Fil d'Ariane">
+        <a href="/index.html">Accueil</a>
+        <span class="breadcrumb-sep" aria-hidden="true">◆</span>
+        <a href="/shop.html">Boutique</a>
+        <span class="breadcrumb-sep" aria-hidden="true">◆</span>
+        <span id="product-breadcrumb-name">Produit</span>
+      </nav>
+
+      <div id="product-messages"></div>
+
+      <!-- Product layout injected by product.js -->
+      <div id="product-container" class="product-layout">
+        <div class="loading-state full" style="grid-column: 1 / -1;">Chargement du bijou…</div>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>

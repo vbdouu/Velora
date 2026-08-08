@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Commandes — Velora</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script defer src="/js/api.js"></script>
+    <script defer src="/js/auth.js"></script>
+    <script defer src="/js/orders.js"></script>
+</head>
+<body class="dashboard-page" data-active="profile">
+    <div id="site-header"></div>
+
+    <main class="page-main animate-fade-in container">
+        <div class="dashboard-layout">
+            <aside class="dashboard-sidebar">
+                <nav class="sidebar-nav">
+                    <a href="/profile.html" class="sidebar-link">Mon profil</a>
+                    <a href="/orders.html" class="sidebar-link active">Mes commandes</a>
+                    <a href="/wishlist.html" class="sidebar-link">Mes favoris</a>
+                    <button class="sidebar-link btn-logout" style="width: 100%; text-align: left; background: none; border: none; border-left: 1px solid transparent; cursor: pointer; color: var(--danger);">Déconnexion</button>
+                </nav>
+            </aside>
+
+            <div class="dashboard-content">
+                <div class="dashboard-header">
+                    <h1>Mes Commandes</h1>
+                    <p class="muted">Historique de vos achats chez Velora</p>
+                </div>
+
+                <div id="orders-messages"></div>
+
+                <div id="orders-list" style="display: flex; flex-direction: column; gap: 32px;">
+                    <div class="loading-state">Chargement de l'historique...</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="site-footer"></div>
+</body>
+</html>

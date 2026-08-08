@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration — Velora</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="/css/style.css">
+    <script defer src="/js/api.js"></script>
+    <script defer src="/js/auth.js"></script>
+    <script defer src="/js/admin-dashboard.js"></script>
+</head>
+
+<body class="dashboard-page admin-page">
+    <div id="site-header"></div>
+
+    <div class="admin-shell">
+
+        <!-- ── ADMIN SIDEBAR ── -->
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <div class="admin-sidebar-top">
+                <div class="admin-sidebar-identity" id="admin-identity">
+                    <div class="admin-identity-icon" id="admin-avatar-letter">S</div>
+                    <div>
+                        <p class="admin-identity-name" id="admin-name">Sara</p>
+                        <p class="admin-identity-role" id="admin-role-label">Administratrice</p>
+                    </div>
+                </div>
+
+                <nav class="admin-nav" aria-label="Administration">
+                    <button class="admin-nav-link active" data-tab="overview" type="button">
+                        <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                            <rect x="3" y="3" width="7" height="7" rx="1" />
+                            <rect x="14" y="3" width="7" height="7" rx="1" />
+                            <rect x="3" y="14" width="7" height="7" rx="1" />
+                            <rect x="14" y="14" width="7" height="7" rx="1" />
+                        </svg>
+                        Vue d'ensemble
+                    </button>
+                    <button class="admin-nav-link" data-tab="orders" type="button">
+                        <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                            <rect x="9" y="3" width="6" height="4" rx="1" />
+                            <line x1="9" y1="12" x2="15" y2="12" />
+                            <line x1="9" y1="16" x2="13" y2="16" />
+                        </svg>
+                        Commandes
+                        <span class="admin-nav-badge" id="badge-pending" style="display:none;"></span>
+                    </button>
+                    <button class="admin-nav-link" data-tab="products" type="button">
+                        <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                            <path
+                                d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+                        </svg>
+                        Produits
+                    </button>
+                    <button class="admin-nav-link" data-tab="categories" type="button">
+                        <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                            <line x1="8" y1="6" x2="21" y2="6" />
+                            <line x1="8" y1="12" x2="21" y2="12" />
+                            <line x1="8" y1="18" x2="21" y2="18" />
+                            <line x1="3" y1="6" x2="3.01" y2="6" />
+                            <line x1="3" y1="12" x2="3.01" y2="12" />
+                            <line x1="3" y1="18" x2="3.01" y2="18" />
+                        </svg>
+                        Catégories
+                    </button>
+                    <button class="admin-nav-link" data-tab="users" type="button">
+                        <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 00-3-3.87" />
+                            <path d="M16 3.13a4 4 0 010 7.75" />
+                        </svg>
+                        Clients
+                    </button>
+                    <button class="admin-nav-link" data-tab="settings" type="button">
+                        <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="3" />
+                            <path
+                                d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+                        </svg>
+                        Paramètres
+                    </button>
+                    <button class="admin-nav-link" data-tab="messages" type="button">
+                        <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        Messages
+                        <span id="unread-messages-badge" class="badge danger" style="display:none;margin-left:auto;padding:2px 6px;font-size:0.7rem;border-radius:10px;">0</span>
+                    </button>
+                    <!-- Admin management tab (super_admin only) -->
+                    <button class="admin-nav-link" data-tab="admins" type="button" id="nav-admins"
+                        style="display:none;">
+                        <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                            <path
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        Administrateurs
+                    </button>
+                </nav>
+            </div>
+
+            <div class="admin-sidebar-foot">
+                <a class="admin-nav-link" href="/index.html" style="text-decoration:none;font-size:0.78rem;">
+                    <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" aria-hidden="true">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
+                    Voir la boutique
+                </a>
+                <button class="admin-nav-link danger" type="button" data-logout>
+                    <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" aria-hidden="true">
+                        <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    Déconnexion
+                </button>
+            </div>
+        </aside>
+
+        <!-- ── ADMIN MAIN CONTENT ── -->
+        <main class="admin-main" role="main">
+            <div id="admin-messages" style="padding: 0 clamp(24px, 3vw, 48px); padding-top: 8px;"></div>
+
+            <!-- ─── OVERVIEW TAB ─── -->
+            <div id="tab-overview" class="admin-tab" style="display:block;">
+                <div class="admin-content-header">
+                    <div>
+                        <h1>Vue d'ensemble</h1>
+                        <p class="muted">Activité de la boutique Velora</p>
+                    </div>
+                    <button class="btn outline small" type="button" id="btn-refresh-dashboard"
+                        onclick="loadDashboard(true)" title="Actualiser les données">
+                        <svg class="refresh-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                            <polyline points="23 4 23 10 17 10" />
+                            <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" />
+                        </svg>
+                        <span class="refresh-btn-text">Actualiser</span>
+                    </button>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="admin-kpi-grid" id="kpi-grid">
+                    <div class="loading-state">Chargement...</div>
+                </div>
+
+                <!-- Recent orders + best sellers -->
+                <div class="admin-overview-grid">
+                    <div class="dashboard-panel">
+                        <div class="dashboard-panel-header">
+                            <h3>Commandes récentes</h3>
+                            <button class="btn outline small" type="button" onclick="switchTab('orders')">Voir
+                                toutes</button>
+                        </div>
+                        <div class="data-table-wrap">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Commande</th>
+                                        <th>Client</th>
+                                        <th>Montant</th>
+                                        <th>Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="overview-recent-orders">
+                                    <tr>
+                                        <td colspan="4" class="loading-state">Chargement...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-panel">
+                        <div class="dashboard-panel-header">
+                            <h3>Meilleures ventes</h3>
+                        </div>
+                        <div class="dashboard-panel-body" id="overview-best-sellers">
+                            <div class="loading-state">Chargement...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Low stock alert -->
+                <div class="dashboard-panel" id="low-stock-panel" style="display:none;">
+                    <div class="dashboard-panel-header">
+                        <h3 style="color:var(--warning);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" style="vertical-align:middle;margin-right:6px;"
+                                aria-hidden="true">
+                                <path
+                                    d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                                <line x1="12" y1="9" x2="12" y2="13" />
+                                <line x1="12" y1="17" x2="12.01" y2="17" />
+                            </svg>
+                            Alertes de stock
+                        </h3>
+                    </div>
+                    <div class="data-table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th>Stock restant</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="low-stock-table">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── ORDERS TAB ─── -->
+            <div id="tab-orders" class="admin-tab" style="display:none;">
+                <div class="admin-content-header">
+                    <div>
+                        <h1>Commandes</h1>
+                        <p class="muted" id="orders-count-label">Suivez et traitez toutes les commandes</p>
+                    </div>
+                    <div class="admin-header-actions">
+                        <button class="btn outline small" type="button" onclick="exportOrders()"
+                            title="Exporter en CSV">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            Exporter
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="admin-filter-bar">
+                    <input type="search" id="orders-search" placeholder="Rechercher une commande..."
+                        class="admin-search-input">
+                    <div class="admin-filter-bar-group">
+                        <select id="orders-filter-status" class="admin-select">
+                            <option value="">Tous les statuts</option>
+                            <option value="pending">En attente</option>
+                            <option value="confirmed">Confirmées</option>
+                            <option value="shipped">Expédiées</option>
+                            <option value="delivered">Livrées</option>
+                            <option value="cancelled">Annulées</option>
+                        </select>
+                        <select id="orders-page-size" class="admin-select admin-select-sm">
+                            <option value="10">10 / page</option>
+                            <option value="25" selected>25 / page</option>
+                            <option value="50">50 / page</option>
+                            <option value="100">100 / page</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dashboard-panel">
+                    <div class="data-table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-sort="id"># <span class="sort-arrow"></span></th>
+                                    <th class="sortable" data-sort="customer">Client <span class="sort-arrow"></span>
+                                    </th>
+                                    <th class="sortable" data-sort="city">Wilaya <span class="sort-arrow"></span></th>
+                                    <th class="sortable" data-sort="date">Date <span class="sort-arrow"></span></th>
+                                    <th class="sortable" data-sort="total">Total <span class="sort-arrow"></span></th>
+                                    <th class="sortable" data-sort="status">Statut <span class="sort-arrow"></span></th>
+                                    <th style="text-align:right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-orders">
+                                <tr>
+                                    <td colspan="7" class="loading-state">Chargement...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-bar" id="orders-pagination"></div>
+                </div>
+            </div>
+
+            <!-- ─── PRODUCTS TAB ─── -->
+            <div id="tab-products" class="admin-tab" style="display:none;">
+                <div class="admin-content-header">
+                    <div>
+                        <h1>Produits</h1>
+                        <p class="muted" id="products-count-label">Gérez votre catalogue de bijoux</p>
+                    </div>
+                    <button class="btn primary small" type="button" onclick="openProductModal()">
+                        + Ajouter un bijou
+                    </button>
+                </div>
+
+                <!-- Filters -->
+                <div class="admin-filter-bar">
+                    <input type="search" id="products-search" placeholder="Rechercher un produit..."
+                        class="admin-search-input">
+                    <div class="admin-filter-bar-group">
+                        <select id="products-filter-category" class="admin-select">
+                            <option value="">Toutes catégories</option>
+                        </select>
+                        <select id="products-filter-stock" class="admin-select">
+                            <option value="">Tous les stocks</option>
+                            <option value="out">Rupture</option>
+                            <option value="low">Stock faible (≤5)</option>
+                            <option value="in">En stock</option>
+                        </select>
+                        <select id="products-page-size" class="admin-select admin-select-sm">
+                            <option value="10">10 / page</option>
+                            <option value="25" selected>25 / page</option>
+                            <option value="50">50 / page</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dashboard-panel">
+                    <div class="data-table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th class="sortable" data-sort="name">Produit <span class="sort-arrow"></span></th>
+                                    <th class="sortable" data-sort="category">Catégorie <span class="sort-arrow"></span>
+                                    </th>
+                                    <th class="sortable" data-sort="price">Prix <span class="sort-arrow"></span></th>
+                                    <th class="sortable" data-sort="stock">Stock <span class="sort-arrow"></span></th>
+                                    <th>Vedette</th>
+                                    <th>Visible</th>
+                                    <th style="text-align:right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-products">
+                                <tr>
+                                    <td colspan="8" class="loading-state">Chargement...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-bar" id="products-pagination"></div>
+                </div>
+            </div>
+
+            <!-- ─── CATEGORIES TAB ─── -->
+            <div id="tab-categories" class="admin-tab" style="display:none;">
+                <div class="admin-content-header">
+                    <div>
+                        <h1>Catégories</h1>
+                        <p class="muted">Organisez votre boutique</p>
+                    </div>
+                    <button class="btn primary small" type="button" onclick="openCategoryModal()">
+                        + Ajouter une catégorie
+                    </button>
+                </div>
+
+                <div class="admin-categories-grid" id="categories-grid">
+                    <div class="loading-state">Chargement...</div>
+                </div>
+            </div>
+
+            <!-- ─── USERS TAB ─── -->
+            <div id="tab-users" class="admin-tab" style="display:none;">
+                <div class="admin-content-header">
+                    <div>
+                        <h1>Clients</h1>
+                        <p class="muted" id="users-count-label">Gérez votre base de clients</p>
+                    </div>
+                    <div class="admin-header-actions">
+                        <button class="btn outline small" type="button" onclick="exportUsers()" title="Exporter en CSV">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            Exporter
+                        </button>
+                    </div>
+                </div>
+
+                <div class="admin-filter-bar">
+                    <input type="search" id="users-search" placeholder="Rechercher un client..."
+                        class="admin-search-input">
+                    <div class="admin-filter-bar-group">
+                        <select id="users-filter-status" class="admin-select">
+                            <option value="">Tous les statuts</option>
+                            <option value="active">Actifs</option>
+                            <option value="blocked">Bloqués</option>
+                        </select>
+                        <select id="users-page-size" class="admin-select admin-select-sm">
+                            <option value="10">10 / page</option>
+                            <option value="25" selected>25 / page</option>
+                            <option value="50">50 / page</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dashboard-panel">
+                    <div class="data-table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-sort="name">Client <span class="sort-arrow"></span></th>
+                                    <th class="sortable" data-sort="email">Email <span class="sort-arrow"></span></th>
+                                    <th>Téléphone</th>
+                                    <th class="sortable" data-sort="order_count">Commandes <span
+                                            class="sort-arrow"></span></th>
+                                    <th class="sortable" data-sort="total_spent">Total dépensé <span
+                                            class="sort-arrow"></span></th>
+                                    <th class="sortable" data-sort="created_at">Inscription <span
+                                            class="sort-arrow"></span></th>
+                                    <th class="sortable" data-sort="status">Statut <span class="sort-arrow"></span></th>
+                                    <th style="text-align:right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-users">
+                                <tr>
+                                    <td colspan="8" class="loading-state">Chargement...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-bar" id="users-pagination"></div>
+                </div>
+            </div>
+
+            <!-- ─── SETTINGS TAB ─── -->
+            <div id="tab-settings" class="admin-tab" style="display:none;">
+                <div class="admin-content-header">
+                    <div>
+                        <h1>Paramètres</h1>
+                        <p class="muted">Configuration de votre boutique Velora</p>
+                    </div>
+                </div>
+
+                <div class="admin-settings-grid">
+
+                    <!-- Store Info -->
+                    <div class="dashboard-panel">
+                        <div class="dashboard-panel-header">
+                            <h3>Informations de la boutique</h3>
+                        </div>
+                        <div class="dashboard-panel-body">
+                            <div id="settings-messages"></div>
+                            <form id="settings-store-form" novalidate>
+                                <div class="form-group">
+                                    <label class="form-label" for="set-store-name">Nom de la boutique</label>
+                                    <input class="form-input" type="text" id="set-store-name" name="store_name"
+                                        placeholder="Velora">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label" for="set-phone">Téléphone</label>
+                                        <input class="form-input" type="tel" id="set-phone" name="store_phone"
+                                            placeholder="+213 555 000 000">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="set-whatsapp">WhatsApp</label>
+                                        <input class="form-input" type="tel" id="set-whatsapp" name="store_whatsapp"
+                                            placeholder="+213 555 000 000">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="set-email">E-mail de contact</label>
+                                    <input class="form-input" type="email" id="set-email" name="store_email"
+                                        placeholder="bonjour@velora.dz">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="set-address">Adresse</label>
+                                    <input class="form-input" type="text" id="set-address" name="store_address"
+                                        placeholder="Alger, Algérie">
+                                </div>
+                                <div class="form-actions">
+                                    <button class="btn primary" type="submit">Enregistrer</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Social Links -->
+                    <div class="dashboard-panel">
+                        <div class="dashboard-panel-header">
+                            <h3>Réseaux sociaux</h3>
+                        </div>
+                        <div class="dashboard-panel-body">
+                            <form id="settings-social-form" novalidate>
+                                <div class="form-group">
+                                    <label class="form-label" for="set-instagram">Instagram</label>
+                                    <input class="form-input" type="url" id="set-instagram" name="instagram_url"
+                                        placeholder="https://www.instagram.com/velora.dz">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="set-facebook">Facebook</label>
+                                    <input class="form-input" type="url" id="set-facebook" name="facebook_url"
+                                        placeholder="https://www.facebook.com/velora.dz">
+                                </div>
+                                <div class="form-actions">
+                                    <button class="btn primary" type="submit">Enregistrer</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Announcement Bar (Upgraded Professional Panel) -->
+                    <div class="dashboard-panel">
+                        <div class="dashboard-panel-header" style="display:flex;justify-content:space-between;align-items:center;">
+                            <div>
+                                <h3>Bandeau d'annonce</h3>
+                                <p class="muted" style="font-size:0.8rem;margin-top:2px;">Message défilant en haut du site pour capter l'attention de vos clientes</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="set-announcement-enabled" name="announcement_enabled" checked>
+                                <span class="toggle-track"></span>
+                            </label>
+                        </div>
+                        <div class="dashboard-panel-body">
+                            <form id="settings-announcement-form" novalidate>
+                                <div class="form-group">
+                                    <label class="form-label" for="set-announcement">Texte du bandeau</label>
+                                    <input class="form-input" type="text" id="set-announcement" name="announcement"
+                                        placeholder="Livraison offerte dès 5 000 DA · Paiement à la livraison disponible">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label" for="set-announcement-bg">Thème visuel</label>
+                                        <select class="form-select" id="set-announcement-bg" name="announcement_bg">
+                                            <option value="gold">✨ Or Prestige (Noir & Doré)</option>
+                                            <option value="dark">🖤 Chic Noir (Intense)</option>
+                                            <option value="rose">🌸 Rose Nude (Douceur)</option>
+                                            <option value="nude">🕯️ Crème Soie (Épuré)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group" style="margin-top:12px;">
+                                    <label class="form-label" style="font-size:0.78rem;color:var(--muted);">Aperçu en direct :</label>
+                                    <div id="announcement-preview-bar" class="announcement-bar announcement-theme-gold" style="border-radius:4px;padding:8px 16px;font-size:0.8rem;text-align:center;margin-top:4px;">
+                                        <span>Livraison offerte dès 5 000 DA d'achat · Paiement à la livraison disponible</span>
+                                        <a href="#" onclick="return false;" style="margin-left:8px;text-decoration:underline;">Découvrir</a>
+                                    </div>
+                                </div>
+
+                                <div class="form-actions" style="margin-top:16px;">
+                                    <button class="btn primary" type="submit">Enregistrer le bandeau</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- 58 Wilayas Shipping Matrix (with Free Shipping Threshold) -->
+                    <div class="dashboard-panel" style="grid-column: span 2;">
+                        <div class="dashboard-panel-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                            <div>
+                                <h3>Tarifs de Livraison par Wilaya (58 Wilayas)</h3>
+                                <p class="muted" style="font-size:0.82rem;margin-top:2px;">Ajustez les frais de livraison à domicile et en bureau (StopDesk) pour chaque Wilaya d'Algérie</p>
+                            </div>
+                            <input type="text" id="wilaya-search-input" class="form-input" placeholder="Filtrer les Wilayas..." style="max-width:220px;padding:6px 12px;font-size:0.82rem;">
+                        </div>
+                        <div class="dashboard-panel-body">
+                            <form id="settings-wilayas-form">
+                                
+                                <!-- Free Shipping Threshold Input at the Top -->
+                                <div class="card" style="padding:16px;margin-bottom:20px;border:1px solid var(--line);background:var(--cream);border-radius:6px;">
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label class="form-label" for="set-free-threshold" style="font-weight:500;">Seuil de Livraison Gratuite (DA)</label>
+                                        <div style="display:flex;gap:12px;align-items:center;max-width:320px;margin-top:6px;">
+                                            <input class="form-input" type="number" min="0" step="100" id="set-free-threshold"
+                                                name="free_threshold" placeholder="5000">
+                                            <span style="font-size:0.85rem;color:var(--muted);white-space:nowrap;">DA</span>
+                                        </div>
+                                        <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">Toutes les commandes dépassant ce montant bénéficieront automatiquement de la livraison gratuite quel que soit le lieu de livraison.</p>
+                                    </div>
+                                </div>
+
+                                <div style="max-height: 420px; overflow-y: auto; border: 1px solid var(--line); border-radius: 6px; margin-bottom: 16px;">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:60px;">Code</th>
+                                                <th>Wilaya</th>
+                                                <th>À domicile (DA)</th>
+                                                <th>Bureau / StopDesk (DA)</th>
+                                                <th>Actif</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="wilayas-table-body">
+                                            <tr>
+                                                <td colspan="5" class="loading-state">Chargement des 58 wilayas...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="form-actions" style="display:flex;justify-content:flex-end;">
+                                    <button class="btn primary" type="submit">Enregistrer les tarifs des Wilayas & Seuil</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ─── MESSAGES TAB ─── -->
+            <div id="tab-messages" class="admin-tab" style="display:none;">
+                <div class="admin-content-header">
+                    <div>
+                        <h1>Messages de Contact</h1>
+                        <p class="muted">Demandes de renseignements et messages reçus du formulaire de contact</p>
+                    </div>
+                </div>
+
+                <div class="table-toolbar">
+                    <div class="search-wrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="7"/>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                        <input type="text" id="messages-search" placeholder="Rechercher par nom, email, téléphone ou mot-clé..." class="form-input">
+                    </div>
+                    <div style="display:flex;gap:12px;align-items:center;">
+                        <select id="messages-status-filter" class="form-input" style="width: auto;">
+                            <option value="all">Tous les statuts</option>
+                            <option value="unread">Non lus uniquement</option>
+                            <option value="read">Lus uniquement</option>
+                            <option value="archived">Archivés</option>
+                        </select>
+                        <button class="btn outline small" type="button" onclick="loadAdminMessages(true)">Actualiser</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-panel">
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Expéditeur</th>
+                                    <th>Téléphone</th>
+                                    <th>Sujet</th>
+                                    <th>Statut</th>
+                                    <th style="text-align:right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="messages-table-body">
+                                <tr>
+                                    <td colspan="6" class="loading-state">Chargement des messages...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-bar" id="messages-pagination"></div>
+                </div>
+            </div>
+
+            <!-- ─── ADMINS TAB (super_admin only) ─── -->
+            <div id="tab-admins" class="admin-tab" style="display:none;">
+                <div class="admin-content-header">
+                    <div>
+                        <h1>Administrateurs</h1>
+                        <p class="muted">Gérez l'équipe d'administration</p>
+                    </div>
+                    <button class="btn primary small" type="button" onclick="openAdminModal()">
+                        + Ajouter un admin
+                    </button>
+                </div>
+
+                <div class="dashboard-panel">
+                    <div class="data-table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Email</th>
+                                    <th>Téléphone</th>
+                                    <th>Rôle</th>
+                                    <th>Statut</th>
+                                    <th style="text-align:right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-admins">
+                                <tr>
+                                    <td colspan="6" class="loading-state">Chargement...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="site-footer" style="display:none;"></div>
+
+    <!-- ─── ORDER DETAIL MODAL ─── -->
+    <div class="modal-backdrop" id="order-modal">
+        <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="order-modal-title">
+            <div class="modal-header">
+                <h2 id="order-modal-title">Détail de la commande</h2>
+                <button type="button" class="modal-close" data-close-modal="order-modal" aria-label="Fermer">×</button>
+            </div>
+            <div class="modal-body" id="order-modal-body">
+                <div class="loading-state">Chargement...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── PRODUCT MODAL ─── -->
+    <div class="modal-backdrop" id="product-modal">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="product-modal-title">
+            <div class="modal-header">
+                <h2 id="product-modal-title">Ajouter un bijou</h2>
+                <button type="button" class="modal-close" data-close-modal="product-modal"
+                    aria-label="Fermer">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="product-form-messages"></div>
+                <form id="product-form" enctype="multipart/form-data" novalidate>
+                    <input type="hidden" id="prod-id" name="id">
+                    <input type="hidden" id="prod-existing-image" name="existingImage">
+
+                    <div class="form-group">
+                        <label class="form-label" for="prod-name">Nom du bijou *</label>
+                        <input class="form-input" type="text" id="prod-name" name="name" required
+                            placeholder="Ex: Bague dorée Amira">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="prod-price">Prix (DA) *</label>
+                            <input class="form-input" type="number" step="1" min="0" id="prod-price" name="price"
+                                required placeholder="1200">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="prod-stock">Stock *</label>
+                            <input class="form-input" type="number" min="0" id="prod-stock" name="stock" required
+                                placeholder="10">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="prod-category">Catégorie *</label>
+                        <select class="form-select" id="prod-category" name="categoryId" required>
+                            <option value="">— Sélectionner une catégorie —</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="prod-material">Matière</label>
+                            <input class="form-input" type="text" id="prod-material" name="material"
+                                placeholder="Ex: Acier inoxydable, Plaqué or">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="prod-color">Couleur</label>
+                            <input class="form-input" type="text" id="prod-color" name="color"
+                                placeholder="Ex: Doré, Argenté">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="prod-dimensions">Dimensions / Taille</label>
+                        <input class="form-input" type="text" id="prod-dimensions" name="dimensions"
+                            placeholder="Ex: Longueur 45cm, Pendentif 1.5cm">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="prod-description">Description</label>
+                        <textarea class="form-textarea" id="prod-description" name="description" rows="3"
+                            placeholder="Description du bijou..."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="prod-care-instructions">Conseils d'entretien</label>
+                            <textarea class="form-textarea" id="prod-care-instructions" name="careInstructions" rows="2"
+                                placeholder="Ex: Éviter l'eau et le parfum pour préserver l'éclat..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="prod-delivery-info">Infos de livraison</label>
+                            <textarea class="form-textarea" id="prod-delivery-info" name="deliveryInfo" rows="2"
+                                placeholder="Ex: Expédition sous 24-48h..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="prod-return-policy">Politique de retour</label>
+                        <textarea class="form-textarea" id="prod-return-policy" name="returnPolicy" rows="2"
+                            placeholder="Ex: Retours acceptés sous 14 jours dans leur emballage d'origine..."></textarea>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="form-label">Image principale</label>
+                        <div class="form-image-preview" id="prod-image-preview" style="display:none;">
+                            <img id="prod-image-preview-img" src="" alt="Aperçu">
+                            <button type="button" class="form-image-remove" id="btn-remove-image">Supprimer
+                                l'image</button>
+                        </div>
+                        <label class="form-file-label" for="prod-image" id="prod-image-label">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                                <rect x="3" y="3" width="18" height="18" rx="2" />
+                                <circle cx="8.5" cy="8.5" r="1.5" />
+                                <polyline points="21 15 16 10 5 21" />
+                            </svg>
+                            <span id="prod-image-filename">Choisir une image (JPG, PNG, WEBP)</span>
+                        </label>
+                        <input class="form-file-input" type="file" id="prod-image" name="image"
+                            accept="image/jpeg,image/png,image/webp">
+                    </div>
+
+                    <!-- Extra images section -->
+                    <div class="form-group" id="prod-extra-images-group">
+                        <label class="form-label">Images supplémentaires</label>
+                        <!-- Existing extra images (populated in edit mode by JS) -->
+                        <div id="prod-extra-images-list" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;"></div>
+                        <!-- Upload new extra images -->
+                        <label class="form-file-label" for="prod-extra-images" style="margin-top:4px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                                <rect x="3" y="3" width="18" height="18" rx="2" />
+                                <circle cx="8.5" cy="8.5" r="1.5" />
+                                <polyline points="21 15 16 10 5 21" />
+                            </svg>
+                            <span id="prod-extra-images-filename">Ajouter des images supplémentaires (multiple)</span>
+                        </label>
+                        <input class="form-file-input" type="file" id="prod-extra-images" name="extraImages"
+                            accept="image/jpeg,image/png,image/webp" multiple>
+                        <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">Ces images alimentent la galerie sur la page produit publique.</p>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group form-toggle-group">
+                            <label class="form-toggle-label" for="prod-featured">
+                                <span>Produit en vedette</span>
+                                <span class="form-toggle-hint">Mis en avant sur la page d'accueil</span>
+                            </label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="prod-featured" name="isFeatured" value="true">
+                                <span class="toggle-track"></span>
+                            </label>
+                        </div>
+                        <div class="form-group form-toggle-group">
+                            <label class="form-toggle-label" for="prod-visible">
+                                <span>Produit visible</span>
+                                <span class="form-toggle-hint">Affiché dans la boutique</span>
+                            </label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="prod-visible" name="isVisible" value="true" checked>
+                                <span class="toggle-track"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn outline" type="button" data-close-modal="product-modal">Annuler</button>
+                        <button class="btn primary" type="submit" id="btn-save-product">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── CATEGORY MODAL ─── -->
+    <div class="modal-backdrop" id="category-modal">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="category-modal-title">
+            <div class="modal-header">
+                <h2 id="category-modal-title">Ajouter une catégorie</h2>
+                <button type="button" class="modal-close" data-close-modal="category-modal"
+                    aria-label="Fermer">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="category-form-messages"></div>
+                <form id="category-form" enctype="multipart/form-data" novalidate>
+                    <input type="hidden" id="cat-id" name="id">
+                    <input type="hidden" id="cat-existing-image" name="existingImage">
+
+                    <div class="form-group">
+                        <label class="form-label" for="cat-name">Nom de la catégorie *</label>
+                        <input class="form-input" type="text" id="cat-name" name="name" required
+                            placeholder="Ex: Bagues, Colliers...">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="cat-description">Description</label>
+                        <textarea class="form-textarea" id="cat-description" name="description" rows="3"
+                            placeholder="Description courte de la catégorie..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Image de la catégorie</label>
+                        <label class="form-file-label" for="cat-image">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                                <rect x="3" y="3" width="18" height="18" rx="2" />
+                                <circle cx="8.5" cy="8.5" r="1.5" />
+                                <polyline points="21 15 16 10 5 21" />
+                            </svg>
+                            <span id="cat-image-filename">Choisir une image</span>
+                        </label>
+                        <input class="form-file-input" type="file" id="cat-image" name="image"
+                            accept="image/jpeg,image/png,image/webp">
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn outline" type="button" data-close-modal="category-modal">Annuler</button>
+                        <button class="btn primary" type="submit" id="btn-save-category">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── BLOCK USER MODAL ─── -->
+    <div class="modal-backdrop" id="block-user-modal">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="block-user-title">
+            <div class="modal-header">
+                <h2 id="block-user-title">Bloquer un client</h2>
+                <button type="button" class="modal-close" data-close-modal="block-user-modal"
+                    aria-label="Fermer">×</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-weight:300;color:var(--text);margin-bottom:20px;">Ce client ne pourra plus se connecter
+                    ni passer de commande. Vous pouvez le débloquer à tout moment.</p>
+                <div class="form-group">
+                    <label class="form-label" for="block-reason">Raison du blocage</label>
+                    <textarea class="form-textarea" id="block-reason" name="reason" rows="3"
+                        placeholder="Ex : commandes frauduleuses, comportement abusif..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn outline" type="button" data-close-modal="block-user-modal">Annuler</button>
+                    <button class="btn danger" type="button" id="btn-confirm-block">Bloquer le client</button>
+                </div>
+                <input type="hidden" id="block-user-id">
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── ADMIN USER MODAL (super_admin only) ─── -->
+    <div class="modal-backdrop" id="admin-modal">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="admin-modal-title">
+            <div class="modal-header">
+                <h2 id="admin-modal-title">Ajouter un administrateur</h2>
+                <button type="button" class="modal-close" data-close-modal="admin-modal" aria-label="Fermer">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="admin-form-messages"></div>
+                <form id="admin-form" novalidate>
+                    <input type="hidden" id="adm-id" name="id">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="adm-first-name">Prénom *</label>
+                            <input class="form-input" type="text" id="adm-first-name" name="firstName" required
+                                placeholder="Prénom">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="adm-last-name">Nom *</label>
+                            <input class="form-input" type="text" id="adm-last-name" name="lastName" required
+                                placeholder="Nom">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="adm-email">E-mail *</label>
+                        <input class="form-input" type="email" id="adm-email" name="email" required
+                            placeholder="admin@velora.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="adm-phone">Téléphone</label>
+                        <input class="form-input" type="tel" id="adm-phone" name="phone" placeholder="+213 555 000 000">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="adm-gender">Genre / Titre *</label>
+                        <select class="form-select" id="adm-gender" name="gender" required>
+                            <option value="female">Femme (Administratrice)</option>
+                            <option value="male">Homme (Administrateur)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="adm-password-group">
+                        <label class="form-label" for="adm-password">Mot de passe * <span
+                                style="font-weight:300;font-size:0.75rem;">(min. 8 caractères)</span></label>
+                        <input class="form-input" type="password" id="adm-password" name="password"
+                            placeholder="••••••••" autocomplete="new-password">
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn outline" type="button" data-close-modal="admin-modal">Annuler</button>
+                        <button class="btn primary" type="submit" id="btn-save-admin">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── ORDER DETAIL MODAL ─── -->
+    <div class="modal-backdrop" id="order-detail-modal">
+        <div class="modal" style="max-width:720px;" role="dialog" aria-modal="true"
+            aria-labelledby="order-detail-modal-title">
+            <div class="modal-header">
+                <h2 id="order-detail-modal-title">Détail de la commande</h2>
+                <button type="button" class="modal-close" data-close-modal="order-detail-modal"
+                    aria-label="Fermer">×</button>
+            </div>
+            <div class="modal-body" id="order-detail-modal-body">
+                <div class="loading-state">Chargement des détails...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── MESSAGE DETAIL MODAL ─── -->
+    <div class="modal-backdrop" id="modal-view-message">
+        <div class="modal" style="max-width:600px;" role="dialog" aria-modal="true" aria-labelledby="msg-modal-title">
+            <div class="modal-header">
+                <h2 id="msg-modal-title">Lecture du Message</h2>
+                <button type="button" class="modal-close" data-close-modal="modal-view-message" aria-label="Fermer">×</button>
+            </div>
+            <div class="modal-body">
+                <div style="background:var(--cream);padding:16px;border-radius:6px;margin-bottom:20px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.85rem;">
+                    <div><strong>Expéditeur :</strong> <span id="msg-detail-name"></span></div>
+                    <div><strong>E-mail :</strong> <a id="msg-detail-email-link" href="#" style="color:var(--gold-dark);text-decoration:underline;"></a></div>
+                    <div><strong>Téléphone :</strong> <a id="msg-detail-phone-link" href="#" style="color:var(--charcoal);text-decoration:underline;"></a></div>
+                    <div><strong>Date :</strong> <span id="msg-detail-date"></span></div>
+                </div>
+                <div style="margin-bottom:16px;">
+                    <label class="form-label" style="font-weight:600;font-size:0.85rem;">Sujet</label>
+                    <div id="msg-detail-subject" style="font-family:var(--font-display);font-size:1.1rem;color:var(--ink);padding:6px 0;"></div>
+                </div>
+                <div style="margin-bottom:24px;">
+                    <label class="form-label" style="font-weight:600;font-size:0.85rem;">Message</label>
+                    <div id="msg-detail-body" style="background:#fff;border:1px solid var(--line);padding:16px;border-radius:6px;font-size:0.9rem;line-height:1.6;white-space:pre-wrap;color:var(--charcoal);"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line-light);padding-top:16px;">
+                    <button class="btn danger outline small" type="button" id="btn-delete-msg">Supprimer</button>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn outline small" type="button" id="btn-toggle-msg-status">Marquer non lu</button>
+                        <button class="btn primary small" type="button" data-close-modal="modal-view-message">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

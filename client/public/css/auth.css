@@ -1,0 +1,431 @@
+/* ============================================================
+   AUTH.CSS — Login & Register — Dark Editorial Premium
+   Velora Luxury Jewelry — 2026
+   ============================================================ */
+
+/* ── Root Layout — Asymmetric Split ── */
+.auth-layout {
+  display: grid;
+  grid-template-columns: 52% 48%;
+  height: calc(100vh - 76px);
+  max-height: calc(100vh - 76px);
+  overflow: hidden;
+  background: var(--dark);
+}
+
+/* ──────────────────────────────────────
+   LEFT PANEL — Full-Bleed Jewelry Photo
+   ────────────────────────────────────── */
+.auth-image-panel {
+  position: relative;
+  overflow: hidden;
+  background: #0D0B08;
+  height: 100%;
+}
+
+.auth-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform-origin: center center;
+  animation: authKenBurns 20s ease-in-out infinite alternate;
+  filter: brightness(0.88) saturate(1.05);
+}
+
+@keyframes authKenBurns {
+  0%   { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.08) translate(-2%, 1%); }
+}
+
+/* Gradient overlay */
+.auth-image-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, transparent 60%, rgba(10, 8, 5, 0.45) 100%),
+    linear-gradient(to top, rgba(8, 6, 3, 0.85) 0%, rgba(8, 6, 3, 0.25) 40%, transparent 70%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(28px, 4vw, 48px);
+}
+
+/* Minimal brand mark on left panel */
+.auth-panel-brand {
+  position: absolute;
+  top: clamp(24px, 3vh, 36px);
+  left: clamp(24px, 3vw, 40px);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  transition: opacity 0.3s;
+}
+
+.auth-panel-brand:hover { opacity: 0.75; }
+.auth-panel-brand span { color: var(--gold); }
+
+/* Gold accent line */
+.auth-gold-rule {
+  width: 36px;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin-bottom: 14px;
+  animation: authFadeUp 0.8s 0.3s both;
+}
+
+.auth-image-quote {
+  animation: authFadeUp 0.8s 0.5s both;
+}
+
+.auth-image-quote blockquote {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 420px;
+  margin: 0 0 10px;
+  letter-spacing: 0.015em;
+}
+
+.auth-image-quote cite {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* ──────────────────────────────────────
+   RIGHT PANEL — Dark Luxury Form Panel
+   ────────────────────────────────────── */
+.auth-form-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px clamp(24px, 4vw, 56px);
+  background: #0E0C09;
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+}
+
+/* Vertical gold accent line on left border of form panel */
+.auth-form-panel::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12%;
+  bottom: 12%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(176, 141, 87, 0.4) 30%, rgba(176, 141, 87, 0.4) 70%, transparent);
+}
+
+.auth-form-inner {
+  max-width: 440px;
+  width: 100%;
+}
+
+.auth-form-inner.narrow {
+  max-width: 360px;
+}
+
+/* ── Staggered entrance ── */
+@keyframes authFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.auth-anim-1 { animation: authFadeUp 0.6s 0.05s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.auth-anim-2 { animation: authFadeUp 0.6s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.auth-anim-3 { animation: authFadeUp 0.6s 0.25s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.auth-anim-4 { animation: authFadeUp 0.6s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* ── Heading Section ── */
+.auth-eyebrow {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.auth-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+
+.auth-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 2.8vw, 2.4rem);
+  font-weight: 300;
+  color: #F4EFE6;
+  line-height: 1.1;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.auth-subheading {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: rgba(197, 187, 172, 0.60);
+  margin-bottom: 20px;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+}
+
+/* ── Form Layout — Underline Inputs ── */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 2-column grid row for register page */
+.auth-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 24px;
+}
+
+.auth-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-field-label {
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-bottom: 4px;
+}
+
+.auth-field-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Underline-only input */
+.auth-field input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(197, 187, 172, 0.22);
+  border-radius: 0;
+  color: #F0EBE2;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 300;
+  padding: 5px 30px 7px 0;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+  -webkit-appearance: none;
+  appearance: none;
+  letter-spacing: 0.01em;
+}
+
+.auth-field input::placeholder {
+  color: rgba(197, 187, 172, 0.22);
+  font-weight: 300;
+  font-size: 0.85rem;
+}
+
+/* Override Chrome / Webkit autofill blue box background & dark text */
+.auth-field input:-webkit-autofill,
+.auth-field input:-webkit-autofill:hover,
+.auth-field input:-webkit-autofill:focus,
+.auth-field input:-webkit-autofill:active {
+  -webkit-text-fill-color: #F0EBE2 !important;
+  -webkit-box-shadow: 0 0 0px 1000px #0E0C09 inset !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+  caret-color: #F0EBE2;
+}
+
+/* Gold animated underline fills on focus */
+.auth-field-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.auth-field:focus-within .auth-field-line {
+  width: 100%;
+}
+
+/* Eye toggle */
+.auth-toggle-pwd {
+  position: absolute;
+  right: 0;
+  background: none;
+  border: none;
+  color: rgba(197, 187, 172, 0.35);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: color 0.25s;
+  flex-shrink: 0;
+}
+
+.auth-toggle-pwd:hover {
+  color: var(--gold-light);
+}
+
+/* ── Alert ── */
+.auth-alert {
+  margin-bottom: 10px;
+}
+
+.auth-alert:empty {
+  display: none;
+}
+
+/* ── Submit Button — Gold Fill ── */
+.auth-submit-btn {
+  margin-top: 4px;
+  width: 100%;
+  background: linear-gradient(105deg, #B08D57 0%, #D4BD91 50%, #B08D57 100%);
+  background-size: 220% 100%;
+  background-position: 0% 0%;
+  color: #0D0B07;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border: none;
+  padding: 14px 24px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background-position 0.6s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 20px rgba(176, 141, 87, 0.25);
+}
+
+.auth-submit-btn:hover {
+  background-position: 100% 0%;
+  box-shadow: 0 6px 28px rgba(176, 141, 87, 0.42);
+  transform: translateY(-1px);
+}
+
+.auth-submit-btn:active {
+  transform: translateY(0);
+}
+
+/* ── Luxury Terms & Security Notice ── */
+.auth-terms-note {
+  font-size: 0.7rem;
+  color: rgba(197, 187, 172, 0.40);
+  font-weight: 300;
+  line-height: 1.45;
+  margin-top: 12px;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+.auth-terms-note a {
+  color: rgba(197, 187, 172, 0.75);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(197, 187, 172, 0.3);
+  padding-bottom: 1px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.auth-terms-note a:hover {
+  color: var(--gold-light);
+  border-color: var(--gold-light);
+}
+
+.auth-security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 0.65rem;
+  color: rgba(197, 187, 172, 0.38);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.auth-security-note svg {
+  color: var(--gold);
+  opacity: 0.85;
+}
+
+/* ── Footer link ── */
+.auth-footer-link {
+  margin-top: 16px;
+  font-size: 0.78rem;
+  color: rgba(197, 187, 172, 0.40);
+  font-weight: 300;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+.auth-footer-link a {
+  color: rgba(197, 187, 172, 0.75);
+  font-weight: 400;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(197, 187, 172, 0.25);
+  padding-bottom: 1px;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.auth-footer-link a:hover {
+  color: var(--gold-light);
+  border-color: var(--gold-light);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .auth-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
+  }
+
+  .auth-image-panel {
+    display: none;
+  }
+
+  .auth-form-panel {
+    min-height: calc(100vh - 76px);
+    padding: 40px 24px;
+    overflow-y: auto;
+  }
+
+  .auth-form-panel::before {
+    display: none;
+  }
+
+  .auth-form-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Velora — Explorez notre collection complète de bijoux élégants : bagues, colliers, bracelets et boucles d'oreilles.">
+  <title>Boutique — Velora</title>
+  <link rel="icon" type="image/svg+xml" href="/images/defaults/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css">
+  <script defer src="/js/api.js"></script>
+  <script defer src="/js/auth.js"></script>
+  <script defer src="/js/shop.js"></script>
+</head>
+<body data-active="shop">
+  <div id="site-header"></div>
+
+  <main class="page-main">
+
+    <!-- Page Header -->
+    <div class="section-cream">
+      <div class="container page-header">
+        <nav class="breadcrumb" aria-label="Fil d'Ariane">
+          <a href="/index.html">Accueil</a>
+          <span class="breadcrumb-sep" aria-hidden="true">◆</span>
+          <span>Boutique</span>
+        </nav>
+        <h1>Toute la collection</h1>
+        <p class="lead">Des pièces façonnées avec soin, pensées pour durer et conçues pour vous accompagner.</p>
+      </div>
+    </div>
+
+    <!-- Shop Layout -->
+    <div class="container">
+      <div class="shop-layout">
+
+        <!-- Sidebar Filters -->
+        <aside class="shop-sidebar" aria-label="Filtres produits">
+
+
+          <div class="shop-sidebar-section">
+            <p class="shop-sidebar-title">Catégories</p>
+            <div id="category-filters" role="group" aria-label="Filtrer par catégorie">
+              <div class="loading-state" style="padding: 16px 0; font-size: 0.85rem;">Chargement…</div>
+            </div>
+          </div>
+
+          <div class="shop-sidebar-section">
+            <p class="shop-sidebar-title">Trier par</p>
+            <div id="sort-options" role="group" aria-label="Trier les produits">
+              <button type="button" class="filter-btn active" data-sort="">Par défaut</button>
+              <button type="button" class="filter-btn" data-sort="price_asc">Prix croissant</button>
+              <button type="button" class="filter-btn" data-sort="price_desc">Prix décroissant</button>
+              <button type="button" class="filter-btn" data-sort="newest">Nouveautés</button>
+            </div>
+          </div>
+
+        </aside>
+
+        <!-- Products Area -->
+        <div class="dashboard-content">
+          <div class="shop-controls" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: center;">
+            <p class="shop-count" id="products-count" style="margin: 0;"></p>
+            <form id="search-form" role="search" novalidate style="flex: 1; max-width: 320px;">
+              <div class="input-group">
+                <input
+                  type="search"
+                  id="search-input"
+                  placeholder="Rechercher un bijou..."
+                  aria-label="Rechercher des bijoux"
+                  autocomplete="off"
+                >
+                <button type="submit" class="btn" aria-label="Lancer la recherche" style="padding-inline: 0; color: var(--gold); font-size: 0.85rem;">→</button>
+              </div>
+            </form>
+            <div id="shop-messages" style="flex-basis: 100%;"></div>
+          </div>
+          <div class="products-grid" id="shop-products" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
+            <div class="loading-state" style="grid-column: 1 / -1;">Chargement des bijoux…</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Panier — Velora</title>
+  <link rel="icon" type="image/svg+xml" href="/images/defaults/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css">
+  <script defer src="/js/api.js"></script>
+  <script defer src="/js/auth.js"></script>
+  <script defer src="/js/cart.js"></script>
+</head>
+<body data-active="cart">
+  <div id="site-header"></div>
+
+  <main class="page-main">
+    <div class="container">
+      <div class="page-header">
+        <nav class="breadcrumb" aria-label="Fil d'Ariane">
+          <a href="/index.html">Accueil</a>
+          <span class="breadcrumb-sep" aria-hidden="true">◆</span>
+          <span>Mon Panier</span>
+        </nav>
+        <h1>Mon panier</h1>
+      </div>
+
+      <div id="cart-messages"></div>
+
+      <div class="cart-layout" id="cart-content">
+        <!-- Cart items -->
+        <div id="cart-items">
+          <div class="loading-state">Chargement de votre panier…</div>
+        </div>
+
+        <!-- Cart summary -->
+        <aside class="cart-summary" aria-label="Résumé de la commande">
+          <h2 class="cart-summary-title">Résumé</h2>
+
+          <div class="cart-summary-line">
+            <span>Sous-total</span>
+            <span id="cart-subtotal">—</span>
+          </div>
+          <div class="cart-summary-line">
+            <span>Livraison</span>
+            <span>Gratuite</span>
+          </div>
+          <div class="cart-summary-line total">
+            <span>Total</span>
+            <span id="cart-total">—</span>
+          </div>
+
+          <a
+            class="btn primary full-width"
+            href="/checkout.html"
+            id="btn-checkout"
+            style="margin-top: 24px; pointer-events: none; opacity: 0.45;"
+          >
+            Passer la commande
+          </a>
+
+          <p class="cart-note">Paiement à la livraison · Emballage cadeau inclus</p>
+
+          <a class="link-underline" href="/shop.html" style="display: block; text-align: center; margin-top: 20px; font-size: 0.78rem;">
+            ← Continuer mes achats
+          </a>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>

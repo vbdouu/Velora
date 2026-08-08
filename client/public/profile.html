@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil — Velora</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script defer src="/js/api.js"></script>
+    <script defer src="/js/auth.js"></script>
+    <script defer src="/js/profile.js"></script>
+</head>
+<body class="dashboard-page" data-active="profile">
+    <div id="site-header"></div>
+
+    <main class="page-main animate-fade-in container">
+        <div class="dashboard-layout">
+            <aside class="dashboard-sidebar">
+                <nav class="sidebar-nav">
+                    <a href="/profile.html" class="sidebar-link active">Mon profil</a>
+                    <a href="/orders.html" class="sidebar-link">Mes commandes</a>
+                    <a href="/wishlist.html" class="sidebar-link">Mes favoris</a>
+                    <button class="sidebar-link btn-logout" style="width: 100%; text-align: left; background: none; border: none; border-left: 1px solid transparent; cursor: pointer; color: var(--danger);">Déconnexion</button>
+                </nav>
+            </aside>
+
+            <div class="dashboard-content">
+                <div class="dashboard-header">
+                    <h1>Mon Profil</h1>
+                    <p class="muted">Gérez vos informations personnelles</p>
+                </div>
+
+                <div id="profile-messages"></div>
+
+                <div style="display: grid; grid-template-columns: 320px 1fr; gap: 32px; align-items: start;">
+                    <!-- Photo -->
+                    <div class="card" style="padding: 32px; align-items: center;">
+                        <div style="width: 140px; height: 140px; border-radius: 50%; overflow: hidden; margin-bottom: 24px; border: 1px solid var(--line);">
+                            <img id="profile-image-preview" src="/images/defaults/avatar.svg" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        
+                        <form id="photo-form" style="width: 100%;">
+                            <div class="form-group" style="text-align: center; margin-bottom: 16px;">
+                                <label for="photo" class="btn outline small" style="cursor: pointer; display: inline-block;">Modifier la photo</label>
+                                <input type="file" id="photo" name="photo" accept="image/*" style="display: none;">
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="card" style="padding: 40px;">
+                        <form id="profile-form">
+                            <div class="form-group">
+                                <label for="firstName">Prénom</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="lastName">Nom</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Adresse e-mail</label>
+                                <input type="email" id="email" name="email" disabled style="color: var(--muted);">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone">Téléphone</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+                            
+                            <button type="submit" class="btn primary">Enregistrer les modifications</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="site-footer"></div>
+</body>
+</html>
