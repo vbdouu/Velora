@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    if (window.currentUser.role === "admin" || window.currentUser.role === "super_admin") {
+    if (window.currentUser.role === "admin") {
         window.location.href = "/admin-dashboard.html";
         return;
     }

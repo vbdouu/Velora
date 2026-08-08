@@ -14,7 +14,7 @@ TRUNCATE TABLE users;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- Admin
-INSERT INTO users (id, first_name, last_name, email, password, role, phone, created_at) VALUES (1, 'Sara', 'Admin', 'sara@velora.dz', '$2b$10$ZvtJksTTMdXk81.SJ5vPOemHnCAp3dok/KxrcpwbtRdkmah/mb.RW', 'super_admin', '0555123456', '2023-01-01 10:00:00');
+INSERT INTO users (id, first_name, last_name, email, password, role, phone, created_at) VALUES (1, 'Sara', 'Admin', 'sara@velora.dz', '$2b$10$ZvtJksTTMdXk81.SJ5vPOemHnCAp3dok/KxrcpwbtRdkmah/mb.RW', 'admin', '0555123456', '2023-01-01 10:00:00');
 INSERT INTO users (id, first_name, last_name, email, password, role, phone, created_at) VALUES (1001, 'Amine', 'Admin', 'amine@velora.dz', '$2b$10$ZvtJksTTMdXk81.SJ5vPOemHnCAp3dok/KxrcpwbtRdkmah/mb.RW', 'admin', '0555123457', '2023-01-01 10:00:00');
 
 -- Clients

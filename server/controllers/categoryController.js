@@ -8,7 +8,7 @@ async function listCategories(req, res) {
     try {
         // Admins can request hidden categories via ?includeHidden=true
         const isAdmin = req.session && req.session.user &&
-            (req.session.user.role === "admin" || req.session.user.role === "super_admin");
+            req.session.user.role === "admin";
         const includeHidden = isAdmin && req.query.includeHidden === "true";
 
         const categories = await categoryModel.findAllCategories(includeHidden);

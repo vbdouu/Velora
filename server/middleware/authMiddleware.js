@@ -24,22 +24,11 @@ function requireClient(req, res, next) {
     next();
 }
 
-// Check if the logged-in user is an administrator (admin or super_admin)
+// Check if the logged-in user is an administrator
 function requireAdmin(req, res, next) {
-    if (req.session.user.role !== "admin" && req.session.user.role !== "super_admin") {
+    if (req.session.user.role !== "admin") {
         return res.status(403).json({
             message: "Accès refusé. Rôle administrateur requis."
-        });
-    }
-
-    next();
-}
-
-// Check if the logged-in user is a super administrator
-function requireSuperAdmin(req, res, next) {
-    if (req.session.user.role !== "super_admin") {
-        return res.status(403).json({
-            message: "Accès refusé. Rôle super administrateur requis."
         });
     }
 
@@ -49,6 +38,5 @@ function requireSuperAdmin(req, res, next) {
 module.exports = {
     requireAuth,
     requireClient,
-    requireAdmin,
-    requireSuperAdmin
+    requireAdmin
 };

@@ -14,7 +14,7 @@ window.veloraSettings = null;
 // ── Role routing ──
 
 function dashboardLink(role) {
-  if (role === "admin" || role === "super_admin") return "/admin-dashboard.html";
+  if (role === "admin") return "/admin-dashboard.html";
   return "/account.html";
 }
 
@@ -649,9 +649,7 @@ function checkRoleAccess() {
     return;
   }
 
-  // super_admin can access anything admin can
-  const hasAccess = user.role === requiredRole ||
-    (requiredRole === "admin" && user.role === "super_admin");
+  const hasAccess = user.role === requiredRole;
 
   if (!hasAccess) {
     window.location.href = dashboardLink(user.role);

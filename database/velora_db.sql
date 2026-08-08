@@ -1,12 +1,12 @@
 -- Velora — Jewelry e-commerce database schema (Canonical Production Schema)
--- This file creates the velora_db database and all 10 required tables.
+-- This file creates the velora_db database and all 12 required tables.
 
 DROP DATABASE IF EXISTS velora_db;
 CREATE DATABASE velora_db CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE velora_db;
 
 -- ─────────────────────────────────────────────────────────────────
--- 1. Users table: stores all accounts (clients, admins, super_admins)
+-- 1. Users table: stores all accounts (clients and admins)
 -- ─────────────────────────────────────────────────────────────────
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -14,7 +14,7 @@ CREATE TABLE users (
     last_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('client', 'admin', 'super_admin') NOT NULL DEFAULT 'client',
+    role ENUM('client', 'admin') NOT NULL DEFAULT 'client',
     profile_photo VARCHAR(255) DEFAULT NULL,
     phone VARCHAR(20) DEFAULT NULL,
     account_status ENUM('active', 'blocked') DEFAULT 'active',

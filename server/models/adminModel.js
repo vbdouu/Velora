@@ -352,83 +352,6 @@ async function unblockUser(id) {
 }
 
 
-// ── Admin user management (super_admin only) ──
-
-async function listAdmins() {
-    const sql = `
-        SELECT id, first_name, last_name, email, phone, role, gender, account_status, created_at
-        FROM users
-        WHERE role IN ('admin', 'super_admin')
-        ORDER BY created_at ASC
-    `;
-
-    const [results] = await db.promise().query(sql);
-    return results;
-}
-
-async function createAdmin(firstName, lastName, email, hashedPassword, phone, role, gender) {
-    const sql = `
-        INSERT INTO users (first_name, last_name, email, password, role, phone, gender)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    `;
-
-    const [result] = await db.promise().query(sql, [firstName, lastName, email, hashedPassword, role || "admin", phone || null, gender || "female"]);
-    return result;
-}
-
-async function updateAdmin(id, firstName, lastName, email, phone, gender) {
-    const sql = `
-        UPDATE users
-        SET first_name = ?, last_name = ?, email = ?, phone = ?, gender = ?
-        WHERE id = ?
-        AND role IN ('admin', 'super_admin')
-    `;
-
-    const [result] = await db.promise().query(sql, [firstName, lastName, email, phone || null, gender || "female", id]);
-    return result;
-}
-
-async function resetAdminPassword(id, hashedPassword) {
-    const sql = `
-        UPDATE users
-        SET password = ?
-        WHERE id = ?
-        AND role IN ('admin', 'super_admin')
-    `;
-
-    const [result] = await db.promise().query(sql, [hashedPassword, id]);
-    return result;
-}
-
-async function deactivateAdmin(id) {
-    const sql = `
-        UPDATE users
-        SET account_status = 'blocked',
-            block_reason = 'Compte désactivé par un super administrateur.',
-            blocked_at = NOW()
-        WHERE id = ?
-        AND role = 'admin'
-    `;
-
-    const [result] = await db.promise().query(sql, [id]);
-    return result;
-}
-
-async function activateAdmin(id) {
-    const sql = `
-        UPDATE users
-        SET account_status = 'active',
-            block_reason = NULL,
-            blocked_at = NULL
-        WHERE id = ?
-        AND role IN ('admin', 'super_admin')
-    `;
-
-    const [result] = await db.promise().query(sql, [id]);
-    return result;
-}
-
-
 // ── Order status history ──
 
 async function addStatusHistory(orderId, oldStatus, newStatus, changedBy, note) {
@@ -474,12 +397,6 @@ module.exports = {
     findUserById,
     blockUser,
     unblockUser,
-    listAdmins,
-    createAdmin,
-    updateAdmin,
-    resetAdminPassword,
-    deactivateAdmin,
-    activateAdmin,
     addStatusHistory,
     getStatusHistory
 };

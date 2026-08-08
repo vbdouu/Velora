@@ -6,7 +6,7 @@ const productModel = require("../models/productModel");
 // Get all products (with optional filters, sorting, pagination)
 async function listProducts(req, res) {
     try {
-        const isAdmin = req.session && req.session.user && (req.session.user.role === "admin" || req.session.user.role === "super_admin");
+        const isAdmin = req.session && req.session.user && req.session.user.role === "admin";
 
         let sortBy = req.query.sortBy || null;
         let sortDir = req.query.sortDir || null;
@@ -70,7 +70,7 @@ async function getProductById(req, res) {
 
         // Block public access to hidden or archived products
         const isAdmin = req.session && req.session.user &&
-            (req.session.user.role === "admin" || req.session.user.role === "super_admin");
+            req.session.user.role === "admin";
 
         if (!isAdmin && (product.is_visible === 0 || product.is_archived === 1)) {
             return res.status(404).json({

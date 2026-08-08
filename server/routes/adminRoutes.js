@@ -3,7 +3,7 @@
 const express = require("express");
 const adminController = require("../controllers/adminController");
 const upload = require("../middleware/uploadMiddleware");
-const { requireAuth, requireAdmin, requireSuperAdmin } = require("../middleware/authMiddleware");
+const { requireAuth, requireAdmin } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -43,13 +43,5 @@ router.put("/orders/:id/notes", adminController.updateOrderNotes);
 // Exports
 router.get("/export/orders", adminController.exportOrdersCsv);
 router.get("/export/users", adminController.exportUsersCsv);
-
-// Admin user management (super_admin only)
-router.get("/admins", requireSuperAdmin, adminController.listAdmins);
-router.post("/admins", requireSuperAdmin, adminController.createAdmin);
-router.put("/admins/:id", requireSuperAdmin, adminController.updateAdmin);
-router.put("/admins/:id/password", requireSuperAdmin, adminController.resetAdminPassword);
-router.put("/admins/:id/deactivate", requireSuperAdmin, adminController.deactivateAdmin);
-router.put("/admins/:id/activate", requireSuperAdmin, adminController.activateAdmin);
 
 module.exports = router;

@@ -98,16 +98,6 @@
                         Messages
                         <span id="unread-messages-badge" class="badge danger" style="display:none;margin-left:auto;padding:2px 6px;font-size:0.7rem;border-radius:10px;">0</span>
                     </button>
-                    <!-- Admin management tab (super_admin only) -->
-                    <button class="admin-nav-link" data-tab="admins" type="button" id="nav-admins"
-                        style="display:none;">
-                        <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
-                            <path
-                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                        </svg>
-                        Administrateurs
-                    </button>
                 </nav>
             </div>
 
@@ -668,40 +658,6 @@
                 </div>
             </div>
 
-            <!-- ─── ADMINS TAB (super_admin only) ─── -->
-            <div id="tab-admins" class="admin-tab" style="display:none;">
-                <div class="admin-content-header">
-                    <div>
-                        <h1>Administrateurs</h1>
-                        <p class="muted">Gérez l'équipe d'administration</p>
-                    </div>
-                    <button class="btn primary small" type="button" onclick="openAdminModal()">
-                        + Ajouter un admin
-                    </button>
-                </div>
-
-                <div class="dashboard-panel">
-                    <div class="data-table-wrap">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>Email</th>
-                                    <th>Téléphone</th>
-                                    <th>Rôle</th>
-                                    <th>Statut</th>
-                                    <th style="text-align:right;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-admins">
-                                <tr>
-                                    <td colspan="6" class="loading-state">Chargement...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
         </main>
     </div>
 
@@ -952,65 +908,6 @@
         </div>
     </div>
 
-    <!-- ─── ADMIN USER MODAL (super_admin only) ─── -->
-    <div class="modal-backdrop" id="admin-modal">
-        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="admin-modal-title">
-            <div class="modal-header">
-                <h2 id="admin-modal-title">Ajouter un administrateur</h2>
-                <button type="button" class="modal-close" data-close-modal="admin-modal" aria-label="Fermer">×</button>
-            </div>
-            <div class="modal-body">
-                <div id="admin-form-messages"></div>
-                <form id="admin-form" novalidate>
-                    <input type="hidden" id="adm-id" name="id">
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label" for="adm-first-name">Prénom *</label>
-                            <input class="form-input" type="text" id="adm-first-name" name="firstName" required
-                                placeholder="Prénom">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="adm-last-name">Nom *</label>
-                            <input class="form-input" type="text" id="adm-last-name" name="lastName" required
-                                placeholder="Nom">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="adm-email">E-mail *</label>
-                        <input class="form-input" type="email" id="adm-email" name="email" required
-                            placeholder="admin@velora.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="adm-phone">Téléphone</label>
-                        <input class="form-input" type="tel" id="adm-phone" name="phone" placeholder="+213 555 000 000">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="adm-gender">Genre / Titre *</label>
-                        <select class="form-select" id="adm-gender" name="gender" required>
-                            <option value="female">Femme (Administratrice)</option>
-                            <option value="male">Homme (Administrateur)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group" id="adm-password-group">
-                        <label class="form-label" for="adm-password">Mot de passe * <span
-                                style="font-weight:300;font-size:0.75rem;">(min. 8 caractères)</span></label>
-                        <input class="form-input" type="password" id="adm-password" name="password"
-                            placeholder="••••••••" autocomplete="new-password">
-                    </div>
-
-                    <div class="form-actions">
-                        <button class="btn outline" type="button" data-close-modal="admin-modal">Annuler</button>
-                        <button class="btn primary" type="submit" id="btn-save-admin">Enregistrer</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <!-- ─── ORDER DETAIL MODAL ─── -->
     <div class="modal-backdrop" id="order-detail-modal">

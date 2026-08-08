@@ -1529,196 +1529,6 @@ function setupSettings() {
 }
 
 
-// ── Admin Management (super_admin) ──
-
-async function loadAdmins() {
-  const tbody = document.getElementById("table-admins");
-  if (!tbody) return;
-
-  try {
-    const { admins } = await apiRequest("/api/admin/admins");
-
-    if (!admins || admins.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6">${emptyState("Aucun administrateur trouvé.")}</td></tr>`;
-      return;
-    }
-
-    tbody.innerHTML = admins.map(a => {
-      const isSuperAdmin = a.role === "super_admin";
-      const isActive = a.account_status === "active";
-      const isSelf = a.id === window.currentUser?.id;
-      const isMale = a.gender === "male" || a.gender === "M" || a.gender === "homme";
-      const roleLabelText = isMale ? "Administrateur" : "Administratrice";
-
-      return `
-        <tr>
-          <td style="font-size:0.875rem;">${escapeHTML(a.first_name)} ${escapeHTML(a.last_name)}</td>
-          <td style="font-size:0.82rem;color:var(--muted);">${escapeHTML(a.email)}</td>
-          <td style="font-size:0.82rem;">${escapeHTML(a.phone || "—")}</td>
-          <td>
-            <span style="font-size:0.75rem;color:var(--charcoal);font-weight:500;">
-              ${roleLabelText}
-            </span>
-          </td>
-          <td>${statusBadge(a.account_status || "active")}</td>
-          <td style="text-align:right;">
-            ${isSuperAdmin || isSelf ? `<span style="font-size:0.72rem;color:var(--muted);">—</span>` : `
-              <div style="display:inline-flex;gap:6px;">
-                <button class="btn outline small" onclick="openAdminModal(${a.id})" type="button">Modifier</button>
-                ${isActive
-            ? `<button class="btn danger small" onclick="deactivateAdmin(${a.id})" type="button">Désactiver</button>`
-            : `<button class="btn outline small" onclick="activateAdmin(${a.id})" type="button">Réactiver</button>`
-          }
-              </div>
-            `}
-          </td>
-        </tr>
-      `;
-    }).join("");
-
-  } catch (error) {
-    tbody.innerHTML = `<tr><td colspan="6">${emptyState("Erreur : " + error.message)}</td></tr>`;
-  }
-}
-
-function openAdminModal(adminId) {
-  const form = document.getElementById("admin-form");
-  const title = document.getElementById("admin-modal-title");
-  const msgEl = document.getElementById("admin-form-messages");
-  const passGroup = document.getElementById("adm-password-group");
-
-  if (!form) return;
-
-  form.reset();
-  document.getElementById("adm-id").value = "";
-  hideAlert(msgEl);
-
-  if (!adminId) {
-    if (title) title.textContent = "Ajouter un administrateur";
-    if (passGroup) passGroup.style.display = "";
-    openModal("admin-modal");
-    return;
-  }
-
-  // Edit mode
-  (async () => {
-    try {
-      const { admins } = await apiRequest("/api/admin/admins");
-      const admin = admins.find(a => a.id === adminId);
-      if (!admin) { showToast("Administrateur introuvable.", "error"); return; }
-
-      if (title) title.textContent = "Modifier l'administrateur";
-      document.getElementById("adm-id").value = admin.id;
-      document.getElementById("adm-first-name").value = admin.first_name || "";
-      document.getElementById("adm-last-name").value = admin.last_name || "";
-      document.getElementById("adm-email").value = admin.email || "";
-      document.getElementById("adm-phone").value = admin.phone || "";
-      const genderEl = document.getElementById("adm-gender");
-      if (genderEl) genderEl.value = admin.gender || "female";
-      if (passGroup) passGroup.style.display = "none";
-
-      openModal("admin-modal");
-    } catch (error) {
-      showToast("Erreur : " + error.message, "error");
-    }
-  })();
-}
-
-function setupAdminForm() {
-  const form = document.getElementById("admin-form");
-  if (!form) return;
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const msgEl = document.getElementById("admin-form-messages");
-    const saveBtn = document.getElementById("btn-save-admin");
-    const id = document.getElementById("adm-id").value;
-
-    const firstName = document.getElementById("adm-first-name").value.trim();
-    const lastName = document.getElementById("adm-last-name").value.trim();
-    const email = document.getElementById("adm-email").value.trim();
-    const phone = document.getElementById("adm-phone").value.trim();
-    const gender = document.getElementById("adm-gender")?.value || "female";
-    const password = document.getElementById("adm-password").value;
-
-    if (!firstName || !lastName || !email) {
-      showAlert(msgEl, "Prénom, nom et email sont obligatoires.", "error");
-      return;
-    }
-
-    if (!id && (!password || password.length < 8)) {
-      showAlert(msgEl, "Le mot de passe doit contenir au moins 8 caractères.", "error");
-      return;
-    }
-
-    hideAlert(msgEl);
-    saveBtn.disabled = true;
-    const originalText = saveBtn.textContent;
-    saveBtn.textContent = "Enregistrement...";
-
-    try {
-      if (id) {
-        await apiRequest(`/api/admin/admins/${id}`, {
-          method: "PUT",
-          body: JSON.stringify({ firstName, lastName, email, phone, gender })
-        });
-        showToast("Administrateur modifié.");
-      } else {
-        await apiRequest("/api/admin/admins", {
-          method: "POST",
-          body: JSON.stringify({ firstName, lastName, email, phone, password, gender })
-        });
-        showToast("Administrateur créé.");
-      }
-
-      closeModal("admin-modal");
-      loadAdmins();
-    } catch (error) {
-      showAlert(msgEl, error.message, "error");
-    } finally {
-      saveBtn.disabled = false;
-      saveBtn.textContent = originalText;
-    }
-  });
-}
-
-async function deactivateAdmin(adminId) {
-  const confirmed = await showConfirmModal({
-    title: "Désactiver l'administrateur",
-    message: "Voulez-vous vraiment désactiver cet administrateur ? Son accès au panneau de gestion sera suspendu.",
-    confirmText: "Désactiver",
-    cancelText: "Annuler",
-    isDanger: true
-  });
-  if (!confirmed) return;
-  try {
-    await apiRequest(`/api/admin/admins/${adminId}/deactivate`, { method: "PUT" });
-    showToast("Administrateur désactivé.");
-    loadAdmins();
-  } catch (error) {
-    showToast(error.message, "error");
-  }
-}
-
-async function activateAdmin(adminId) {
-  const confirmed = await showConfirmModal({
-    title: "Réactiver l'administrateur",
-    message: "Réactiver cet administrateur ? Son accès au panneau de gestion sera rétabli.",
-    confirmText: "Réactiver",
-    cancelText: "Annuler",
-    isDanger: false
-  });
-  if (!confirmed) return;
-  try {
-    await apiRequest(`/api/admin/admins/${adminId}/activate`, { method: "PUT" });
-    showToast("Administrateur réactivé.");
-    loadAdmins();
-  } catch (error) {
-    showToast(error.message, "error");
-  }
-}
-
 // ── CSV Exports ──
 
 function exportOrders() {
@@ -1930,15 +1740,9 @@ function setupMessagesFilters() {
 document.addEventListener("DOMContentLoaded", async () => {
   await waitForSession();
 
-  if (!window.currentUser || (window.currentUser.role !== "admin" && window.currentUser.role !== "super_admin")) {
+  if (!window.currentUser || window.currentUser.role !== "admin") {
     window.location.href = "/login.html";
     return;
-  }
-
-  // Show admin management tab for super_admin
-  if (window.currentUser.role === "super_admin") {
-    const navAdmins = document.getElementById("nav-admins");
-    if (navAdmins) navAdmins.style.display = "";
   }
 
   setupTabNavigation();
@@ -1949,7 +1753,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupUsersFilters();
   setupMessagesFilters();
   setupSettings();
-  setupAdminForm();
 
   // Sortable headers
   setupSortableHeaders("#tab-orders .data-table", tabState.orders, loadOrders);
