@@ -3,26 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Votre panier Velora — Vérifiez vos bijoux et passez votre commande. Paiement à la livraison en Algérie.">
   <title>Mon Panier — Velora</title>
   <link rel="icon" type="image/svg+xml" href="/images/defaults/favicon.svg">
   <link rel="stylesheet" href="/css/style.css">
   <script defer src="/js/api.js"></script>
   <script defer src="/js/auth.js"></script>
+  <script defer src="/js/toast.js"></script>
   <script defer src="/js/cart.js"></script>
 </head>
 <body data-active="cart">
   <div id="site-header"></div>
 
   <main class="page-main">
-    <div class="container">
-      <div class="page-header">
+    <div class="section-cream">
+      <div class="container page-header">
         <nav class="breadcrumb" aria-label="Fil d'Ariane">
           <a href="/index.html">Accueil</a>
-          <span class="breadcrumb-sep" aria-hidden="true">◆</span>
-          <span>Mon Panier</span>
+          <span class="breadcrumb-sep" aria-hidden="true">&#9670;</span>
+          <span>Mon panier</span>
         </nav>
         <h1>Mon panier</h1>
       </div>
+    </div>
+    <div class="container" style="padding-top: clamp(28px, 4vw, 48px); padding-bottom: clamp(48px, 6vw, 80px);">
 
       <div id="cart-messages"></div>
 
@@ -36,13 +40,15 @@
         <aside class="cart-summary" aria-label="Résumé de la commande">
           <h2 class="cart-summary-title">Résumé</h2>
 
+          <div id="cart-free-shipping-info" style="margin-bottom: 16px; font-size: 0.85rem; line-height: 1.5;"></div>
+
           <div class="cart-summary-line">
             <span>Sous-total</span>
             <span id="cart-subtotal">—</span>
           </div>
           <div class="cart-summary-line">
             <span>Livraison</span>
-            <span>Gratuite</span>
+            <span style="color: var(--muted); font-size: 0.82rem;">Calculée au checkout</span>
           </div>
           <div class="cart-summary-line total">
             <span>Total</span>
@@ -58,10 +64,10 @@
             Passer la commande
           </a>
 
-          <p class="cart-note">Paiement à la livraison · Emballage cadeau inclus</p>
+          <p class="cart-note">Paiement à la livraison · Livraison calculée au checkout</p>
 
           <a class="link-underline" href="/shop.html" style="display: block; text-align: center; margin-top: 20px; font-size: 0.78rem;">
-            ← Continuer mes achats
+            &larr; Continuer mes achats
           </a>
         </aside>
       </div>

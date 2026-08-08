@@ -1,8 +1,11 @@
 // ============================================================
 // SHOP.JS — Shop Page Logic
 // Category filters, search, sort, and product rendering.
-// Velora Premium Jewelry — 2026
+// Velora Jewelry Boutique — 2026
 // ============================================================
+
+const SHOP_HEART_EMPTY = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>`;
+const SHOP_HEART_FULL = `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>`;
 
 let currentCategoryId = getParam("category") || "";
 let currentSearch = getParam("search") || "";
@@ -42,7 +45,7 @@ function shopProductCard(product) {
           class="card-wishlist-btn"
           data-product-id="${id}"
           aria-label="Ajouter ${name} aux favoris"
-        >♡</button>
+        >${SHOP_HEART_EMPTY}</button>
       </a>
       <div class="card-body">
         <p class="product-category">${category}</p>
@@ -55,6 +58,25 @@ function shopProductCard(product) {
   `;
 }
 
+
+let categoriesMap = {};
+
+function updateShopHeaderTitle() {
+  const titleEl = document.getElementById("shop-main-title");
+  if (!titleEl) return;
+
+  let title = "Toute la collection";
+  if (currentSearch) {
+    title = `Recherche : "${currentSearch}"`;
+  } else if (currentFeatured === "true" || currentFeatured === "1") {
+    title = "Nouveautés";
+  } else if (currentCategoryId && categoriesMap[currentCategoryId]) {
+    title = categoriesMap[currentCategoryId];
+  }
+
+  titleEl.textContent = title;
+  document.title = `${title} — Velora`;
+}
 
 // ── Load category filters ──
 
@@ -72,6 +94,7 @@ async function loadFilters() {
     `;
 
     categories.forEach((cat) => {
+      categoriesMap[cat.id] = cat.name;
       const isActive = String(currentCategoryId) === String(cat.id);
       html += `
         <button type="button" class="filter-btn ${isActive ? "active" : ""}" data-category="${cat.id}">
@@ -82,11 +105,13 @@ async function loadFilters() {
     });
 
     container.innerHTML = html;
+    updateShopHeaderTitle();
 
     // Bind clicks
     container.querySelectorAll(".filter-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         currentCategoryId = btn.dataset.category;
+        currentFeatured = ""; // Clear featured if selecting a category
         updateURL();
 
         container.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
@@ -102,16 +127,30 @@ async function loadFilters() {
 }
 
 
+const PAGE_SIZE = 12;
+let currentPage = 1;
+let totalProductsCount = 0;
+let totalPagesCount = 1;
+let loadedProductsCount = 0;
+let isLoadingMore = false;
+
 // ── Load products ──
 
-async function loadProducts() {
+async function loadProducts(isLoadMore = false) {
   const container = document.getElementById("shop-products");
   const countEl = document.getElementById("products-count");
   const msgEl = document.getElementById("shop-messages");
+  const paginationWrap = document.getElementById("shop-pagination");
+  const paginationInfo = document.getElementById("pagination-info");
   if (!container) return;
 
-  container.innerHTML = `<div class="loading-state" style="grid-column: 1 / -1;">Recherche de bijoux…</div>`;
-  hideAlert(msgEl);
+  if (!isLoadMore) {
+    currentPage = 1;
+    updateShopHeaderTitle();
+    container.innerHTML = `<div class="loading-state" style="grid-column: 1 / -1;">Recherche de bijoux…</div>`;
+    hideAlert(msgEl);
+    if (paginationWrap) paginationWrap.style.display = "none";
+  }
 
   try {
     const params = new URLSearchParams();
@@ -119,37 +158,62 @@ async function loadProducts() {
     if (currentSearch) params.set("search", currentSearch);
     if (currentFeatured) params.set("featured", currentFeatured);
     if (currentSort) params.set("sort", currentSort);
+    params.set("page", currentPage);
+    params.set("pageSize", PAGE_SIZE);
 
-    const { products } = await apiRequest(`/api/products?${params.toString()}`);
+    const result = await apiRequest(`/api/products?${params.toString()}`);
+    const products = result.products || [];
+    totalProductsCount = typeof result.total === "number" ? result.total : products.length;
+    totalPagesCount = typeof result.totalPages === "number" ? result.totalPages : 1;
 
-    // Update product count
-    if (countEl) {
-      countEl.textContent = products.length
-        ? `${products.length} bijou${products.length > 1 ? "x" : ""} trouvé${products.length > 1 ? "s" : ""}`
-        : "";
+    if (!isLoadMore) {
+      loadedProductsCount = products.length;
+
+      // Update product count in header
+      if (countEl) {
+        countEl.textContent = totalProductsCount
+          ? `${totalProductsCount} création${totalProductsCount > 1 ? "s" : ""}`
+          : "0 création";
+      }
+
+      if (!products.length) {
+        container.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 80px 20px;">
+            <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--gold); margin-bottom: 20px; opacity: 0.8;">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <p style="font-family: var(--font-display); font-size: 1.4rem; color: var(--ink); margin-bottom: 8px;">Aucune pièce trouvée</p>
+            <p style="font-size: 0.95rem; color: var(--muted); margin-bottom: 24px;">Nous n'avons pas trouvé de bijoux correspondant à votre recherche.</p>
+            <button type="button" class="btn outline small" onclick="window.location.href='/shop.html'">Effacer les filtres</button>
+          </div>
+        `;
+        if (paginationWrap) paginationWrap.style.display = "none";
+        return;
+      }
+
+      container.innerHTML = products.map(shopProductCard).join("");
+    } else {
+      loadedProductsCount += products.length;
+      container.insertAdjacentHTML("beforeend", products.map(shopProductCard).join(""));
     }
 
-    if (!products.length) {
-      container.innerHTML = `
-        <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 80px 20px;">
-          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--gold); margin-bottom: 20px; opacity: 0.8;">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-          <p style="font-family: var(--font-display); font-size: 1.4rem; color: var(--ink); margin-bottom: 8px;">Aucune pièce trouvée</p>
-          <p style="font-size: 0.95rem; color: var(--muted); margin-bottom: 24px;">Nous n'avons pas trouvé de bijoux correspondant à votre recherche.</p>
-          <button type="button" class="btn outline small" onclick="window.location.href='/shop.html'">Effacer les filtres</button>
-        </div>
-      `;
-      return;
-    }
-
-    container.innerHTML = products.map(shopProductCard).join("");
     bindWishlistButtons(container);
 
+    // Update pagination button & info
+    if (paginationWrap && paginationInfo) {
+      if (currentPage < totalPagesCount) {
+        paginationWrap.style.display = "flex";
+        paginationInfo.textContent = `Affichage de ${loadedProductsCount} sur ${totalProductsCount} créations`;
+      } else {
+        paginationWrap.style.display = "none";
+      }
+    }
+
   } catch (error) {
-    container.innerHTML = "";
+    if (!isLoadMore) container.innerHTML = "";
     showAlert(msgEl, escapeHTML(error.message), "error");
+    if (paginationWrap) paginationWrap.style.display = "none";
   }
 }
 
@@ -170,7 +234,7 @@ function bindWishlistButtons(container) {
           guestWishlist.push(id);
           localStorage.setItem("velora_wishlist", JSON.stringify(guestWishlist));
         }
-        btn.textContent = "♥";
+        btn.innerHTML = SHOP_HEART_FULL;
         btn.classList.add("active");
         showToast("Ajouté à vos favoris.");
         return;
@@ -182,7 +246,7 @@ function bindWishlistButtons(container) {
           body: JSON.stringify({ productId: id })
         });
 
-        btn.textContent = "♥";
+        btn.innerHTML = SHOP_HEART_FULL;
         btn.classList.add("active");
         showToast("Ajouté à vos favoris.");
 
@@ -190,26 +254,6 @@ function bindWishlistButtons(container) {
         showToast(error.message, "error");
       }
     });
-  });
-}
-
-
-// ── Search form ──
-
-function setupSearch() {
-  const form = document.getElementById("search-form");
-  const input = document.getElementById("search-input");
-  if (!form || !input) return;
-
-  if (currentSearch) {
-    input.value = currentSearch;
-  }
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    currentSearch = input.value.trim();
-    updateURL();
-    loadProducts();
   });
 }
 
@@ -234,8 +278,31 @@ function setupSortOptions() {
       container.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
 
-      loadProducts();
+      loadProducts(false);
     });
+  });
+}
+
+
+// ── Setup Pagination (Load More) ──
+
+function setupPagination() {
+  const btn = document.getElementById("btn-load-more");
+  if (!btn) return;
+
+  btn.addEventListener("click", async () => {
+    if (isLoadingMore || currentPage >= totalPagesCount) return;
+    isLoadingMore = true;
+    btn.disabled = true;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = `<span>Chargement…</span>`;
+
+    currentPage++;
+    await loadProducts(true);
+
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+    isLoadingMore = false;
   });
 }
 
@@ -271,8 +338,8 @@ function updateURL() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   await waitForSession();
-  setupSearch();
   setupSortOptions();
+  setupPagination();
   loadFilters();
-  loadProducts();
+  loadProducts(false);
 });

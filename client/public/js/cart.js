@@ -41,7 +41,15 @@ async function loadCart() {
     }
 
     if (!cart.items || cart.items.length === 0) {
-      container.innerHTML = `<div class="empty-state">Votre panier est vide.<br><a class="link-underline" href="/shop.html" style="margin-top: 12px; display: inline-block;">Explorer la boutique →</a></div>`;
+      container.innerHTML = `
+        <div class="empty-state" style="grid-column: 1 / -1; padding: 64px 20px; text-align: center;">
+          <p style="font-family: var(--font-display); font-size: 1.25rem; font-style: normal; color: var(--ink); margin-bottom: 8px;">Votre panier est vide</p>
+          <p style="font-size: 0.88rem; color: var(--muted); margin-bottom: 24px; font-family: var(--font-body); font-style: normal;">Découvrez nos créations exclusives et ajoutez vos coups de cœur au panier.</p>
+          <a class="btn primary small" href="/shop.html">
+            Explorer la boutique →
+          </a>
+        </div>
+      `;
 
       // Hide summary side
       const cartLayout = document.getElementById("cart-content");

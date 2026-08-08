@@ -1,8 +1,11 @@
 // ============================================================
 // PRODUCT.JS — Product Detail Page
-// Gallery, add to cart, add to wishlist.
-// Velora Premium Jewelry — 2026
+// Gallery, add to cart, add to wishlist, related products.
+// Velora Jewelry Boutique — 2026
 // ============================================================
+
+const PROD_HEART_EMPTY = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;vertical-align:middle;margin-right:6px;"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>`;
+const PROD_HEART_FULL  = `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px;vertical-align:middle;margin-right:6px;"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>`;
 
 const productId = getParam("id");
 
@@ -123,7 +126,7 @@ async function loadProductDetails() {
             </button>
           </div>
           <button type="button" id="btn-wishlist" class="btn outline full-width">
-            ♡ &nbsp;Ajouter aux favoris
+            ${PROD_HEART_EMPTY}&nbsp;Ajouter aux favoris
           </button>
         </form>
 
@@ -164,6 +167,9 @@ async function loadProductDetails() {
 
     // Initialize wishlist button
     initWishlistBtn(product);
+
+    // Load related products (by same category, async — doesn't block render)
+    loadRelatedProducts(product);
 
   } catch (error) {
     container.innerHTML = "";
@@ -319,7 +325,7 @@ function initWishlistBtn(product) {
         guestWishlist.push(String(product.id));
         localStorage.setItem("velora_wishlist", JSON.stringify(guestWishlist));
       }
-      btn.innerHTML = `♥ &nbsp;Ajouté aux favoris`;
+      btn.innerHTML = `${PROD_HEART_FULL}&nbsp;Ajouté aux favoris`;
       btn.classList.add("active");
       showToast("Ajouté à vos favoris.");
       return;
@@ -333,7 +339,7 @@ function initWishlistBtn(product) {
         body: JSON.stringify({ productId: product.id })
       });
 
-      btn.innerHTML = `♥ &nbsp;Ajouté aux favoris`;
+      btn.innerHTML = `${PROD_HEART_FULL}&nbsp;Ajouté aux favoris`;
       btn.classList.add("active");
       showToast("Ajouté à vos favoris.");
 
@@ -344,6 +350,52 @@ function initWishlistBtn(product) {
       btn.disabled = false;
     }
   });
+}
+
+
+// ── Related Products ──
+
+async function loadRelatedProducts(product) {
+  const section   = document.getElementById("related-section");
+  const container = document.getElementById("related-products");
+  if (!section || !container) return;
+
+  try {
+    const params = new URLSearchParams();
+    if (product.category_id) params.set("category", product.category_id);
+    params.set("limit", "4");
+
+    const { products } = await apiRequest(`/api/products?${params.toString()}`);
+    const related = (products || []).filter(p => String(p.id) !== String(product.id)).slice(0, 4);
+
+    if (!related.length) return;
+
+    container.innerHTML = related.map(p => {
+      const img      = escapeHTML(p.image || "/images/defaults/product.svg");
+      const name     = escapeHTML(p.name);
+      const category = escapeHTML(p.category_name || "");
+      const price    = formatPrice(p.price);
+      const id       = p.id;
+      return `
+        <article class="product-card">
+          <a class="card-image-wrap" href="/product.html?id=${id}" aria-label="${name}">
+            <img class="card-image" src="${img}" alt="${name}" loading="lazy" onerror="this.src='/images/defaults/product.svg'">
+            <div class="card-overlay" aria-hidden="true"><span class="btn light small">Voir le bijou</span></div>
+          </a>
+          <div class="card-body">
+            <p class="product-category">${category}</p>
+            <h3 class="product-name"><a href="/product.html?id=${id}">${name}</a></h3>
+            <p class="product-price">${price}</p>
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    section.removeAttribute("hidden");
+
+  } catch {
+    // Silently ignore related product errors
+  }
 }
 
 

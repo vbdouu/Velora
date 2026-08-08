@@ -5,14 +5,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
-    content="Velora — Bijoux élégants façonnés avec soin. Bagues, colliers, bracelets et boucles d'oreilles pour sublimer chaque moment de votre vie.">
+    content="Velora — Bijoux tendance et accessibles, livrés partout en Algérie. Paiement à la livraison, emballage soigné, bijoux choisis avec soin.">
   <meta name="theme-color" content="#FDFCF8">
-  <title>Velora — Bijoux de Prestige</title>
+  <title>Velora — Bijoux tendance en Algérie</title>
   <link rel="icon" type="image/svg+xml" href="/images/defaults/favicon.svg">
   <link rel="stylesheet" href="/css/style.css">
   <script defer src="/js/api.js"></script>
   <script defer src="/js/auth.js"></script>
   <script defer src="/js/toast.js"></script>
+  <script defer src="/js/quickview.js"></script>
   <script defer src="/js/home.js"></script>
 </head>
 
@@ -63,98 +64,59 @@
       <p class="hero-scroll-hint" aria-hidden="true">Défiler</p>
     </section>
 
-    <!-- ══ Marquee / Brand Strip ══ -->
-    <div class="marquee-track" aria-hidden="true">
-      <div class="marquee-content" id="marquee-a">
-        <span class="marquee-item">Acier Inoxydable</span>
-        <span class="marquee-item">Plaqué Or</span>
-        <span class="marquee-item">Résiste à l'eau</span>
-        <span class="marquee-item">Livraison 58 Wilayas</span>
-        <span class="marquee-item">Paiement à la livraison</span>
-        <span class="marquee-item">Emballage soigné</span>
-        <span class="marquee-item">Acier Inoxydable</span>
-        <span class="marquee-item">Plaqué Or</span>
-        <span class="marquee-item">Résiste à l'eau</span>
-        <span class="marquee-item">Livraison 58 Wilayas</span>
-        <span class="marquee-item">Paiement à la livraison</span>
-        <span class="marquee-item">Emballage soigné</span>
+
+    <!-- ══ Trust Strip (remplace marquee + pillars) ══ -->
+    <div class="trust-strip" aria-label="Garanties Velora">
+      <div class="container trust-strip-inner">
+        <div class="trust-item">
+          <div class="trust-item-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <div class="trust-item-text">
+            <span class="trust-item-label">Livraison 58 Wilayas</span>
+            <span class="trust-item-sub">Domicile ou bureau, 3–5 jours</span>
+          </div>
+        </div>
+        <a class="trust-item" href="/livraison.html" tabindex="0">
+          <div class="trust-item-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </div>
+          <div class="trust-item-text">
+            <span class="trust-item-label">Paiement à la livraison</span>
+            <span class="trust-item-sub">Aucun prépaiement exigé</span>
+          </div>
+        </a>
+        <div class="trust-item">
+          <div class="trust-item-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="trust-item-text">
+            <span class="trust-item-label">Bijoux soigneusement sélectionnés</span>
+            <span class="trust-item-sub">Qualité vérifiée</span>
+          </div>
+        </div>
+        <a class="trust-item" href="/retours.html" tabindex="0">
+          <div class="trust-item-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+          </div>
+          <div class="trust-item-text">
+            <span class="trust-item-label">Retours sous 7 jours</span>
+            <span class="trust-item-sub">Procédure simple et rapide</span>
+          </div>
+        </a>
       </div>
     </div>
 
-    <!-- ══ Trust Pillars ══ -->
-    <div class="pillars-strip section-cream">
-      <div class="container">
-        <div class="pillars-grid">
-          <div class="pillar-card reveal">
-            <div class="pillar-icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                <path d="M24 6L28.5 18H42L31.5 26L35.5 38L24 30L12.5 38L16.5 26L6 18H19.5L24 6Z" stroke-linejoin="round"
-                  stroke-linecap="round" />
-              </svg>
-            </div>
-            <h5 class="pillar-title">Bijoux Résistants</h5>
-            <p class="pillar-desc">Acier inoxydable et plaqué or de qualité, pour des bijoux qui durent.</p>
-          </div>
-          <div class="pillar-card reveal reveal-delay-1">
-            <div class="pillar-icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                <path d="M24 8C15.163 8 8 15.163 8 24s7.163 16 16 16 16-7.163 16-16S32.837 8 24 8Z"
-                  stroke-linecap="round" />
-                <path d="M17 24l5 5 9-9" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </div>
-            <h5 class="pillar-title">Paiement à la livraison</h5>
-            <p class="pillar-desc">Commandez en toute tranquillité et réglez votre commande à la réception.</p>
-          </div>
-          <div class="pillar-card reveal reveal-delay-2">
-            <div class="pillar-icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                <rect x="8" y="18" width="32" height="22" rx="1" stroke-linecap="round" />
-                <path d="M16 18V14a8 8 0 0116 0v4" stroke-linecap="round" />
-              </svg>
-            </div>
-            <h5 class="pillar-title">Livraison Rapide</h5>
-            <p class="pillar-desc">Nous livrons vos bijoux préférés partout en Algérie (58 wilayas).</p>
-          </div>
-          <div class="pillar-card reveal reveal-delay-3">
-            <div class="pillar-icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 16l16-8 16 8v20l-16 8L8 36V16Z" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M24 8v32M8 16l16 8 16-8" stroke-linecap="round" />
-              </svg>
-            </div>
-            <h5 class="pillar-title">Emballage Élégant</h5>
-            <p class="pillar-desc">Chaque commande est préparée avec soin pour un déballage inoubliable.</p>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- ══ New Collection Banner ══ -->
-    <section class="section-sm" aria-label="Nouvelle collection">
-      <div class="collection-banner">
-        <img class="collection-banner-image" src="/images/collection-banner.png" alt="Nouvelle collection bijoux Velora"
-          loading="lazy" onerror="this.src='/images/defaults/category.png'">
-        <div class="collection-banner-overlay" aria-hidden="true"></div>
-        <div class="collection-banner-content reveal">
-          <p class="eyebrow-dark">Nouvelle Arrivage</p>
-          <h2>Collection Douceur</h2>
-          <p>Des pièces fines et lumineuses pour égayer vos tenues de tous les jours. Laissez-vous séduire par nos
-            nouveautés.</p>
-          <a class="btn outline-light" href="/shop.html">Voir la boutique</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══ Featured Products ══ -->
+    <!-- ══ Featured Products (section unique) ══ -->
     <section class="section section-ivory" aria-labelledby="featured-heading">
       <div class="container">
         <div class="section-heading-between">
           <div>
             <span class="eyebrow">Sélection</span>
-            <h2 id="featured-heading">Nos pièces phares</h2>
+            <h2 id="featured-heading">Nos bijoux du moment</h2>
           </div>
-          <a class="link-underline" href="/shop.html">Voir tout</a>
+          <a class="link-underline" href="/shop.html">Voir tout &rarr;</a>
         </div>
         <div class="products-grid" id="featured-products">
           <!-- Loaded via home.js -->
@@ -162,14 +124,14 @@
       </div>
     </section>
 
+
     <!-- ══ Categories ══ -->
     <section class="section section-cream" aria-labelledby="categories-heading">
       <div class="container">
         <div class="section-heading">
-          <span class="eyebrow">Collections</span>
+          <span class="eyebrow">Catégories</span>
           <h2 id="categories-heading">Explorez nos univers</h2>
-          <p class="lead">Du sobre à l'élaboré, trouvez la pièce qui correspond à votre personnalité et à l'occasion.
-          </p>
+          <p class="lead">Explorez nos créations raffinées et trouvez la pièce qui sublimera votre style.</p>
         </div>
         <div class="categories-grid-4" id="home-categories">
           <!-- Loaded via home.js -->
@@ -177,95 +139,83 @@
       </div>
     </section>
 
-    <!-- ══ Brand Story / Editorial ══ -->
+    <!-- ══ How to order ══ -->
+    <section class="how-it-works" aria-labelledby="hiw-heading">
+      <div class="container">
+        <div class="how-it-works-heading">
+          <span class="eyebrow-dark">Simple &amp; rapide</span>
+          <h2 id="hiw-heading">Comment commander chez Velora ?</h2>
+        </div>
+        <div class="how-steps">
+          <div class="how-step">
+            <div class="how-step-num" aria-hidden="true">1</div>
+            <p class="how-step-title">Choisissez vos bijoux</p>
+            <p class="how-step-desc">Parcourez la boutique et ajoutez vos coups de cœur au panier.</p>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num" aria-hidden="true">2</div>
+            <p class="how-step-title">Validez votre commande</p>
+            <p class="how-step-desc">Renseignez votre adresse et choisissez la wilaya de livraison.</p>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num" aria-hidden="true">3</div>
+            <p class="how-step-title">Payez à la livraison</p>
+            <p class="how-step-desc">Le livreur vous contacte avant le passage. Vous réglez en espèces à la réception.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ Brand Story ══ -->
     <section class="section section-ivory" aria-labelledby="story-heading">
       <div class="container">
         <div class="editorial-split">
           <div class="editorial-image-wrap reveal">
-            <img class="editorial-image" src="/images/sara-boutique.png" alt="Bijoux Velora" loading="lazy"
-              onerror="this.src='/images/defaults/category.png'">
+            <img class="editorial-image" src="/images/boutique-velora.png" alt="Bijoux Velora"
+              loading="lazy" onerror="this.src='/images/defaults/category.png'">
           </div>
           <div class="editorial-text reveal reveal-delay-1">
             <span class="eyebrow">Notre Boutique</span>
-            <h2 id="story-heading">La passion des beaux bijoux</h2>
-            <p>Créée par Sara, Velora est née d'une passion pour les bijoux tendance et accessibles. Au départ simple
-              page Instagram, notre petite boutique s'agrandit aujourd'hui pour mieux vous servir.</p>
-            <p>Notre mission reste la même : vous dénicher des pépites, des pièces délicates et de qualité qui sauront
-              sublimer vos tenues, le tout avec un service client toujours à votre écoute.</p>
+            <h2 id="story-heading">Des bijoux choisis avec soin, pour vous</h2>
+            <p>Velora est une boutique de bijoux tendance et accessibles, créée pour mettre de la beauté dans le quotidien. Chaque pièce est sélectionnée avec attention pour sa qualité, son style et son rapport qualité-prix.</p>
+            <p>Nous livrons partout en Algérie, avec paiement à la livraison et un service client toujours à votre écoute.</p>
             <a class="btn outline" href="/shop.html">Découvrir la boutique</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ══ Best Sellers ══ -->
-    <section class="section section-warm" aria-labelledby="bestsellers-heading">
+    <!-- ══ Reviews Zone ══ -->
+    <section class="reviews-zone" aria-labelledby="reviews-heading">
       <div class="container">
-        <div class="section-heading-between">
+        <div class="reviews-heading">
           <div>
-            <span class="eyebrow">Meilleures ventes</span>
-            <h2 id="bestsellers-heading">Les incontournables</h2>
+            <span class="eyebrow">Avis clients</span>
+            <h2 id="reviews-heading">Ce que pensent nos clientes</h2>
           </div>
-          <a class="link-underline" href="/shop.html">Voir tout</a>
         </div>
-        <div class="products-grid-3" id="bestseller-products">
-          <!-- Loaded via home.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Removed Luxury Packaging Section -->
-
-    <!-- ══ Testimonials ══ -->
-    <section class="section section-ivory" aria-labelledby="testimonials-heading">
-      <div class="container">
-        <div class="section-heading">
-          <span class="eyebrow">Avis Clients</span>
-          <h2 id="testimonials-heading">Ce qu'elles disent de Velora</h2>
-          <p class="lead">Des retours sincères de nos clientes qui ont fait confiance à notre savoir-faire.</p>
-        </div>
-        <div class="testimonials-grid">
-          <article class="testimonial-card reveal">
-            <div class="testimonial-stars" aria-label="5 étoiles">★★★★★</div>
-            <p class="testimonial-quote">Les bijoux sont d'une beauté et d'une qualité que je n'attendais pas pour ce
-              prix. Le collier est arrivé dans un emballage sublime — j'ai eu les larmes aux yeux en l'ouvrant.</p>
-            <div class="testimonial-author">
-              <div class="testimonial-avatar-initial" aria-hidden="true">S</div>
-              <div>
-                <p class="testimonial-author-name">Sara M.</p>
-                <p class="testimonial-author-location">Alger</p>
-              </div>
-              <span class="testimonial-tag" aria-label="Catégorie">Colliers</span>
+        <div class="reviews-placeholder-grid">
+          <div class="review-placeholder-card">
+            <div class="review-placeholder-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
             </div>
-          </article>
-
-          <article class="testimonial-card reveal reveal-delay-1">
-            <div class="testimonial-stars" aria-label="5 étoiles">★★★★★</div>
-            <p class="testimonial-quote">J'ai commandé une bague pour ma mère et elle était aux anges. La qualité de
-              l'or est irréprochable. Le service client m'a accompagnée avec beaucoup de gentillesse.</p>
-            <div class="testimonial-author">
-              <div class="testimonial-avatar-initial" aria-hidden="true">L</div>
-              <div>
-                <p class="testimonial-author-name">Lina K.</p>
-                <p class="testimonial-author-location">Oran</p>
-              </div>
-              <span class="testimonial-tag">Bagues</span>
+            <p class="review-placeholder-text">Les premières avis de nos clientes arriveront bientôt ici.</p>
+            <p class="review-placeholder-note">Votre avis est précieux — partagez votre expérience après réception.</p>
+          </div>
+          <div class="review-placeholder-card">
+            <div class="review-placeholder-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
             </div>
-          </article>
-
-          <article class="testimonial-card reveal reveal-delay-2">
-            <div class="testimonial-stars" aria-label="4 étoiles">★★★★☆</div>
-            <p class="testimonial-quote">Belle sélection, des bijoux vraiment élégants. Le bracelet que j'ai choisi est
-              exactement comme sur les photos — fin, bien fini et très agréable à porter au quotidien.</p>
-            <div class="testimonial-author">
-              <div class="testimonial-avatar-initial" aria-hidden="true">A</div>
-              <div>
-                <p class="testimonial-author-name">Amira B.</p>
-                <p class="testimonial-author-location">Constantine</p>
-              </div>
-              <span class="testimonial-tag">Bracelets</span>
+            <p class="review-placeholder-text">Partagez votre expérience avec Velora après votre commande.</p>
+            <p class="review-placeholder-note">Contactez-nous par WhatsApp ou e-mail.</p>
+          </div>
+          <div class="review-placeholder-card">
+            <div class="review-placeholder-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             </div>
-          </article>
+            <p class="review-placeholder-text">Chaque bijou est vérifié avant expédition. Votre satisfaction est notre priorité.</p>
+            <p class="review-placeholder-note">Retour sous 7 jours si besoin.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -296,8 +246,8 @@
           <div class="faq-sidebar">
             <span class="eyebrow">Questions Fréquentes</span>
             <h2 id="faq-heading">Tout ce que vous devez savoir</h2>
-            <p>Vous avez d'autres questions ? Contactez-nous à <a href="mailto:bonjour@velora.dz"
-                style="color: var(--gold);">bonjour@velora.dz</a></p>
+            <p>Vous avez d'autres questions ? Contactez-nous à <a href="mailto:" data-store-email-link
+                style="color: var(--gold);"><span data-store-email></span></a></p>
           </div>
 
           <div class="faq-list" id="faq-accordion">
@@ -320,8 +270,8 @@
               </button>
               <div class="faq-answer" role="region">
                 <div class="faq-answer-inner">
-                  Nous livrons partout en Algérie sous 3 à 5 jours ouvrables. Le paiement se fait à la livraison — aucun
-                  prépaiement requis. La livraison est offerte pour toute commande dépassant 5 000 DA.
+                  Nous livrons partout en Algérie sous 24h à 72h ouvrables selon la wilaya. Le paiement se fait à la livraison — aucun
+                  prépaiement requis. La livraison est offerte pour toute commande dès <span data-store-free-threshold>5 000 DA</span> d'achat.
                 </div>
               </div>
             </div>
@@ -333,8 +283,7 @@
               </button>
               <div class="faq-answer" role="region">
                 <div class="faq-answer-inner">
-                  Oui, nous acceptons les retours dans les 14 jours suivant la réception, à condition que le bijou soit
-                  dans son état d'origine et dans son emballage. Contactez-nous par e-mail pour initier le retour.
+                  Oui, nous acceptons les retours dans les <strong>7 jours</strong> suivant la réception, à condition que le bijou soit dans son état d'origine et dans son emballage. Contactez-nous par WhatsApp ou e-mail pour initier le retour.
                 </div>
               </div>
             </div>

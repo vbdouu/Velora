@@ -4,18 +4,24 @@ let wilayasData = [];
 let storefrontSettings = {};
 
 async function loadWilayasAndSettings() {
+    const select = document.getElementById("shipping_wilaya");
     try {
         const res = await apiRequest("/api/settings");
         storefrontSettings = res.settings || {};
         wilayasData = res.wilayas || [];
 
-        const select = document.getElementById("shipping_wilaya");
-        if (select && wilayasData.length > 0) {
-            select.innerHTML = '<option value="">— Sélectionner votre Wilaya —</option>' + 
-                wilayasData.map(w => `<option value="${w.wilaya_code}" data-home="${w.home_fee}" data-desk="${w.desk_fee}">${w.wilaya_code} - ${escapeHTML(w.wilaya_name)} (${w.home_fee} DA)</option>`).join("");
+        if (select) {
+            if (wilayasData.length > 0) {
+                select.innerHTML = '<option value="" disabled selected>— Sélectionner votre Wilaya —</option>' + 
+                    wilayasData.map(w => `<option value="${w.wilaya_code}" data-home="${w.home_fee}" data-desk="${w.desk_fee}">${w.wilaya_code} - ${escapeHTML(w.wilaya_name)} (${typeof formatPrice === "function" ? formatPrice(w.home_fee) : w.home_fee + " DA"})</option>`).join("");
+            } else {
+                select.innerHTML = '<option value="" disabled selected>Aucune wilaya disponible actuellement</option>';
+            }
         }
     } catch (e) {
-        // Fallback
+        if (select) {
+            select.innerHTML = '<option value="" disabled selected>Impossible de charger les wilayas. Veuillez rafraîchir.</option>';
+        }
     }
 }
 

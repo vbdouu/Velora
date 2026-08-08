@@ -330,6 +330,8 @@ async function deleteProductImageById(req, res) {
 async function createCategory(req, res) {
     try {
         const { name, description } = req.body;
+        const showInFooter = req.body.show_in_footer === "1" || req.body.show_in_footer === 1 || req.body.show_in_footer === true ? 1 : 0;
+        const isVisible = req.body.is_visible === "0" || req.body.is_visible === 0 || req.body.is_visible === false ? 0 : 1;
         const image = req.file ? "/uploads/" + req.file.filename : null;
 
         if (!name) {
@@ -338,7 +340,7 @@ async function createCategory(req, res) {
             });
         }
 
-        const result = await categoryModel.createCategory(name, description || null, image);
+        const result = await categoryModel.createCategory(name, description || null, image, showInFooter, isVisible);
 
         res.status(201).json({
             message: "Catégorie créée avec succès.",
@@ -354,6 +356,8 @@ async function createCategory(req, res) {
 async function updateCategory(req, res) {
     try {
         const { name, description } = req.body;
+        const showInFooter = req.body.show_in_footer === "1" || req.body.show_in_footer === 1 || req.body.show_in_footer === true ? 1 : 0;
+        const isVisible = req.body.is_visible === "0" || req.body.is_visible === 0 || req.body.is_visible === false ? 0 : 1;
 
         const category = await categoryModel.findCategoryById(req.params.id);
         if (!category) {
@@ -380,7 +384,7 @@ async function updateCategory(req, res) {
             });
         }
 
-        await categoryModel.updateCategory(req.params.id, name, description || null, image);
+        await categoryModel.updateCategory(req.params.id, name, description || null, image, showInFooter, isVisible);
 
         res.status(200).json({ message: "Catégorie modifiée avec succès." });
 

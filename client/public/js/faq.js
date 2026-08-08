@@ -1,29 +1,32 @@
 // ============================================================
 // FAQ.JS — Interactive Accordion Controller for FAQ Page
-// Handles expanding/collapsing FAQ items.
+// AOLA-style: click to open/close, animated max-height
 // Velora Jewelry Boutique — 2026
 // ============================================================
 
 document.addEventListener("DOMContentLoaded", () => {
-    const faqItems = document.querySelectorAll(".faq-luxury-item");
+  const items = document.querySelectorAll(".faq-item");
 
-    faqItems.forEach(item => {
-        const questionHeader = item.querySelector(".faq-luxury-question");
-        if (!questionHeader) return;
+  items.forEach(item => {
+    const question = item.querySelector(".faq-question");
+    const answer   = item.querySelector(".faq-answer");
+    if (!question || !answer) return;
 
-        questionHeader.style.cursor = "pointer";
+    question.addEventListener("click", () => {
+      const isOpen = item.classList.contains("open");
 
-        questionHeader.addEventListener("click", () => {
-            const isActive = item.classList.contains("active");
+      // Close all others first
+      items.forEach(other => {
+        if (other !== item) {
+          other.classList.remove("open");
+          const otherQ = other.querySelector(".faq-question");
+          if (otherQ) otherQ.setAttribute("aria-expanded", "false");
+        }
+      });
 
-            // Close other items if desired, or toggle current
-            faqItems.forEach(otherItem => {
-                if (otherItem !== item) {
-                    otherItem.classList.remove("active");
-                }
-            });
-
-            item.classList.toggle("active", !isActive);
-        });
+      // Toggle current
+      item.classList.toggle("open", !isOpen);
+      question.setAttribute("aria-expanded", String(!isOpen));
     });
+  });
 });

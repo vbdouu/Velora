@@ -1,20 +1,25 @@
-// ============================================================
-// HOME.JS — Homepage Logic
-// Loads featured products, bestsellers, categories.
+﻿// ============================================================
+// HOME.JS â€” Homepage Logic
+// Loads featured products, categories.
 // Also handles FAQ accordion, newsletter, and scroll reveal.
-// Velora Premium Jewelry — 2026
+// Velora Jewelry Boutique â€” 2026
 // ============================================================
 
 
-// ── Product card template ──
-// Used for featured products and bestseller sections
+// â”€â”€ Inline SVG for wishlist heart â”€â”€
+
+const SVG_HEART_EMPTY = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>`;
+const SVG_HEART_FULL  = `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>`;
+
+
+// â”€â”€ Product card template â”€â”€
 
 function productCardTemplate(product) {
-  const img = escapeHTML(product.image || "/images/defaults/product.svg");
-  const name = escapeHTML(product.name);
+  const img      = escapeHTML(product.image || "/images/defaults/product.svg");
+  const name     = escapeHTML(product.name);
   const category = escapeHTML(product.category_name || "");
-  const price = formatPrice(product.price);
-  const id = product.id;
+  const price    = formatPrice(product.price);
+  const id       = product.id;
 
   const badge = product.is_featured
     ? `<span class="card-badge card-badge-new">Nouveau</span>`
@@ -40,7 +45,7 @@ function productCardTemplate(product) {
           data-product-id="${id}"
           aria-label="Ajouter ${name} aux favoris"
           title="Ajouter aux favoris"
-        >♡</button>
+        >${SVG_HEART_EMPTY}</button>
       </a>
       <div class="card-body">
         <p class="product-category">${category}</p>
@@ -54,15 +59,19 @@ function productCardTemplate(product) {
 }
 
 
-// ── Category card template ──
+// â”€â”€ Category card template â”€â”€
+// Note: uses category.slug if available, otherwise category.id
+// to keep links consistent (no slug/id mixing)
 
 function categoryCardTemplate(category) {
-  const img = escapeHTML(category.image || "/images/defaults/category.svg");
-  const name = escapeHTML(category.name);
-  const count = category.total_products || 0;
+  const img    = escapeHTML(category.image || "/images/defaults/category.svg");
+  const name   = escapeHTML(category.name);
+  const count  = category.total_products || 0;
+  // Prefer slug for readable URLs, fall back to id
+  const filter = category.slug ? encodeURIComponent(category.slug) : category.id;
 
   return `
-    <a class="category-card reveal" href="/shop.html?category=${category.id}" aria-label="${name}">
+    <a class="category-card reveal" href="/shop.html?category=${filter}" aria-label="${name}">
       <div class="card-image-wrap">
         <img
           class="card-image"
@@ -74,30 +83,36 @@ function categoryCardTemplate(category) {
       </div>
       <div class="card-body">
         <h3 class="category-name">${name}</h3>
-        <p class="category-count">${count} pièce${count > 1 ? "s" : ""}</p>
+        <p class="category-count">${count} piece${count !== 1 ? "s" : ""}</p>
       </div>
     </a>
   `;
 }
 
 
-// ── Load featured products ──
+// â”€â”€ Load featured products (single section) â”€â”€
 
 async function loadFeaturedProducts() {
   const container = document.getElementById("featured-products");
   if (!container) return;
 
-  container.innerHTML = `<div class="loading-state full" style="grid-column: 1 / -1;">Chargement des bijoux…</div>`;
+  container.innerHTML = `<div class="loading-state full" style="grid-column: 1 / -1;">Chargement des bijoux\u2026</div>`;
 
   try {
     const { products } = await apiRequest("/api/products?featured=true&limit=8");
 
-    if (!products.length) {
-      container.innerHTML = `<div class="empty-state full" style="grid-column: 1 / -1;">Aucun produit disponible pour le moment.</div>`;
-      return;
+    if (!products || !products.length) {
+      // Fallback: load any products
+      const fallback = await apiRequest("/api/products?limit=8");
+      if (!fallback.products || !fallback.products.length) {
+        container.innerHTML = `<div class="empty-state full" style="grid-column: 1 / -1;">Aucun bijou disponible pour le moment.</div>`;
+        return;
+      }
+      container.innerHTML = fallback.products.map(productCardTemplate).join("");
+    } else {
+      container.innerHTML = products.map(productCardTemplate).join("");
     }
 
-    container.innerHTML = products.map(productCardTemplate).join("");
     observeRevealElements(container);
     bindWishlistButtons(container);
 
@@ -107,45 +122,19 @@ async function loadFeaturedProducts() {
 }
 
 
-// ── Load bestseller products (reuses same API, different set) ──
-
-async function loadBestsellerProducts() {
-  const container = document.getElementById("bestseller-products");
-  if (!container) return;
-
-  container.innerHTML = `<div class="loading-state full" style="grid-column: 1 / -1;">Chargement…</div>`;
-
-  try {
-    const { products } = await apiRequest("/api/products?limit=3");
-
-    if (!products.length) {
-      container.innerHTML = `<div class="empty-state full" style="grid-column: 1 / -1;">Aucun produit disponible.</div>`;
-      return;
-    }
-
-    container.innerHTML = products.map(productCardTemplate).join("");
-    observeRevealElements(container);
-    bindWishlistButtons(container);
-
-  } catch (error) {
-    container.innerHTML = `<div class="empty-state full" style="grid-column: 1 / -1;">${escapeHTML(error.message)}</div>`;
-  }
-}
-
-
-// ── Load categories ──
+// â”€â”€ Load categories â”€â”€
 
 async function loadHomeCategories() {
   const container = document.getElementById("home-categories");
   if (!container) return;
 
-  container.innerHTML = `<div class="loading-state full" style="grid-column: 1 / -1;">Chargement des catégories…</div>`;
+  container.innerHTML = `<div class="loading-state full" style="grid-column: 1 / -1;">Chargement des cat\u00e9gories\u2026</div>`;
 
   try {
     const { categories } = await apiRequest("/api/categories");
 
-    if (!categories.length) {
-      container.innerHTML = `<div class="empty-state full" style="grid-column: 1 / -1;">Aucune catégorie disponible.</div>`;
+    if (!categories || !categories.length) {
+      container.innerHTML = `<div class="empty-state full" style="grid-column: 1 / -1;">Aucune cat\u00e9gorie disponible.</div>`;
       return;
     }
 
@@ -158,7 +147,8 @@ async function loadHomeCategories() {
 }
 
 
-// ── Wishlist quick-add from product cards ──
+// â”€â”€ Wishlist quick-add from product cards â”€â”€
+// Supports both guest (localStorage) and logged-in users
 
 function bindWishlistButtons(container) {
   container.querySelectorAll(".card-wishlist-btn").forEach((btn) => {
@@ -166,12 +156,20 @@ function bindWishlistButtons(container) {
       e.preventDefault();
       e.stopPropagation();
 
+      const id = btn.dataset.productId;
+
       if (!window.currentUser) {
-        window.location.href = "/login.html";
+        // Guest: save to localStorage
+        let guestWishlist = JSON.parse(localStorage.getItem("velora_wishlist")) || [];
+        if (!guestWishlist.includes(String(id))) {
+          guestWishlist.push(String(id));
+          localStorage.setItem("velora_wishlist", JSON.stringify(guestWishlist));
+        }
+        btn.innerHTML = SVG_HEART_FULL;
+        btn.classList.add("active");
+        if (typeof showToast === "function") showToast("Ajout\u00e9 \u00e0 vos favoris.");
         return;
       }
-
-      const id = btn.dataset.productId;
 
       try {
         await apiRequest("/api/wishlist", {
@@ -179,19 +177,19 @@ function bindWishlistButtons(container) {
           body: JSON.stringify({ productId: id })
         });
 
-        btn.textContent = "♥";
+        btn.innerHTML = SVG_HEART_FULL;
         btn.classList.add("active");
-        showToast("Ajouté à vos favoris.");
+        if (typeof showToast === "function") showToast("Ajout\u00e9 \u00e0 vos favoris.");
 
       } catch (error) {
-        showToast(error.message, "error");
+        if (typeof showToast === "function") showToast(error.message, "error");
       }
     });
   });
 }
 
 
-// ── FAQ Accordion ──
+// â”€â”€ FAQ Accordion â”€â”€
 
 function initFaqAccordion() {
   const accordion = document.getElementById("faq-accordion");
@@ -199,14 +197,15 @@ function initFaqAccordion() {
 
   accordion.querySelectorAll(".faq-question").forEach((button) => {
     button.addEventListener("click", () => {
-      const item = button.closest(".faq-item");
+      const item   = button.closest(".faq-item");
       const isOpen = item.classList.contains("open");
 
       // Close all items first
       accordion.querySelectorAll(".faq-item").forEach((el) => {
         el.classList.remove("open");
         el.querySelector(".faq-question").setAttribute("aria-expanded", "false");
-        el.querySelector(".faq-answer").style.maxHeight = "";
+        const ans = el.querySelector(".faq-answer");
+        if (ans) ans.style.maxHeight = "";
       });
 
       // Toggle clicked item
@@ -215,15 +214,17 @@ function initFaqAccordion() {
         button.setAttribute("aria-expanded", "true");
 
         const answer = item.querySelector(".faq-answer");
-        const inner = item.querySelector(".faq-answer-inner");
-        answer.style.maxHeight = inner.offsetHeight + "px";
+        const inner  = item.querySelector(".faq-answer-inner");
+        if (answer && inner) {
+          answer.style.maxHeight = inner.offsetHeight + "px";
+        }
       }
     });
   });
 }
 
 
-// ── Newsletter form ──
+// â”€â”€ Newsletter form â”€â”€
 
 function initNewsletterForm() {
   const form = document.getElementById("newsletter-form");
@@ -234,18 +235,24 @@ function initNewsletterForm() {
     const email = document.getElementById("newsletter-email");
     if (!email?.value.trim()) return;
 
-    // Show success (no real API endpoint — visual only for now)
-    showToast("Merci ! Vous êtes inscrite à notre newsletter.");
+    if (typeof showToast === "function") showToast("Merci\u00a0! Vous \u00eates inscrite \u00e0 notre newsletter.");
     form.reset();
   });
 }
 
 
-// ── Scroll Reveal (Intersection Observer) ──
+// â”€â”€ Scroll Reveal (Intersection Observer) â”€â”€
+// Falls back gracefully if IntersectionObserver is not available
 
 function observeRevealElements(scope = document) {
-  const elements = scope.querySelectorAll(".reveal");
+  const elements = scope.querySelectorAll(".reveal:not(.visible)");
   if (!elements.length) return;
+
+  // If no IntersectionObserver, just mark all as visible
+  if (!("IntersectionObserver" in window)) {
+    elements.forEach((el) => el.classList.add("visible"));
+    return;
+  }
 
   const observer = new IntersectionObserver(
     (entries) => {
@@ -256,21 +263,20 @@ function observeRevealElements(scope = document) {
         }
       });
     },
-    { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+    { threshold: 0.08, rootMargin: "0px 0px -30px 0px" }
   );
 
   elements.forEach((el) => observer.observe(el));
 }
 
 
-// ── Init ──
+// â”€â”€ Init â”€â”€
 
 document.addEventListener("DOMContentLoaded", async () => {
   await waitForSession();
 
   // Load dynamic content in parallel
   loadFeaturedProducts();
-  loadBestsellerProducts();
   loadHomeCategories();
 
   // Page interactions
@@ -280,3 +286,4 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Reveal all existing .reveal elements on the page
   observeRevealElements();
 });
+

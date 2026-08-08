@@ -15,7 +15,7 @@ async function getPublicSettings(req, res) {
             "store_name", "store_phone", "store_whatsapp", "store_email",
             "store_address", "instagram_url", "facebook_url",
             "shipping_home", "shipping_desk", "free_threshold",
-            "announcement_enabled", "announcement", "announcement_bg",
+            "announcement_enabled", "announcement", "announcement_bg", "announcement_btn_text",
             "seo_title", "seo_description"
         ];
 
@@ -56,7 +56,7 @@ async function updateSettings(req, res) {
                 "store_name", "store_phone", "store_whatsapp", "store_email",
                 "store_address", "instagram_url", "facebook_url",
                 "shipping_home", "shipping_desk", "free_threshold",
-                "announcement_enabled", "announcement", "announcement_bg",
+                "announcement_enabled", "announcement", "announcement_bg", "announcement_btn_text",
                 "seo_title", "seo_description"
             ];
             for (const [key, value] of Object.entries(updates)) {

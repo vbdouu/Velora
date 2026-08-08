@@ -41,22 +41,26 @@ async function findCategoryById(id) {
 }
 
 // Create a category
-async function createCategory(name, description, image) {
+async function createCategory(name, description, image, showInFooter = 0, isVisible = 1) {
     const sql = `
-        INSERT INTO categories (name, description, image)
-        VALUES (?, ?, ?)
+        INSERT INTO categories (name, description, image, show_in_footer, is_visible)
+        VALUES (?, ?, ?, ?, ?)
     `;
 
-    const [result] = await db.promise().query(sql, [name, description, image]);
+    const [result] = await db.promise().query(sql, [
+        name,
+        description,
+        image,
+        showInFooter ? 1 : 0,
+        isVisible ? 1 : 0
+    ]);
     return result;
 }
 
 // Update a category
-async function updateCategory(id, name, description, image) {
-    // Build the SET clause dynamically so we never overwrite the image with null
-    // when no new image was provided.
-    const fields = ["name = ?", "description = ?"];
-    const params = [name, description];
+async function updateCategory(id, name, description, image, showInFooter = 0, isVisible = 1) {
+    const fields = ["name = ?", "description = ?", "show_in_footer = ?", "is_visible = ?"];
+    const params = [name, description, showInFooter ? 1 : 0, isVisible ? 1 : 0];
 
     if (image !== null && image !== undefined) {
         fields.push("image = ?");

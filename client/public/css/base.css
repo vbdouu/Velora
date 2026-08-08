@@ -54,8 +54,9 @@
   --space-4xl:  128px;
 
   /* Section Padding */
-  --section-pad: clamp(72px, 10vw, 120px);
-  --section-pad-sm: clamp(48px, 6vw, 80px);
+  --section-pad: clamp(56px, 7vw, 96px);
+  --section-pad-sm: clamp(40px, 5vw, 64px);
+  --section-pad-xs: clamp(24px, 3vw, 40px);
 
   /* Container */
   --container-max: 1320px;
@@ -72,7 +73,7 @@
   --shadow-inset:   inset 0 1px 3px rgba(28, 20, 10, 0.06);
 
   /* Borders */
-  --radius:     0px;  /* Sharp corners — luxury feel */
+  --radius:     4px;
   --radius-sm:  2px;
   --radius-pill: 999px;
 
@@ -434,8 +435,20 @@ h5 {
   50%       { opacity: 0.5; }
 }
 
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  30%       { transform: scale(1.25); }
+  60%       { transform: scale(1.1); }
+}
+
+@keyframes linkPop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(0.94); }
+  100% { transform: scale(1); }
+}
+
 .animate-fade-up {
-  animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .animate-fade-in {
@@ -443,5 +456,18 @@ h5 {
 }
 
 .animate-slide-up {
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── Reduced Motion ── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

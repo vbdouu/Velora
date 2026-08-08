@@ -29,9 +29,10 @@ async function loadWishlist() {
 
     if (!items || items.length === 0) {
       container.innerHTML = `
-        <div class="empty-state" style="grid-column: 1 / -1;">
-          Votre liste de favoris est vide.<br>
-          <a class="link-underline" href="/shop.html" style="margin-top: 12px; display: inline-block;">
+        <div class="empty-state" style="grid-column: 1 / -1; padding: 64px 20px; text-align: center;">
+          <p style="font-family: var(--font-display); font-size: 1.25rem; font-style: normal; color: var(--ink); margin-bottom: 8px;">Votre liste de favoris est vide</p>
+          <p style="font-size: 0.88rem; color: var(--muted); margin-bottom: 24px; font-family: var(--font-body); font-style: normal;">Enregistrez vos pièces préférées pour les retrouver à tout moment.</p>
+          <a class="btn primary small" href="/shop.html">
             Explorer la boutique →
           </a>
         </div>
@@ -42,39 +43,32 @@ async function loadWishlist() {
     container.innerHTML = items.map((item) => `
       <article class="product-card animate-fade-up">
 
-        <div class="card-image-wrap" style="position: relative;">
-          <a href="/product.html?id=${item.product_id}" aria-label="${escapeHTML(item.product_name)}">
-            <img
-              class="card-image"
-              src="${escapeHTML(item.product_image || "/images/defaults/product.svg")}"
-              alt="${escapeHTML(item.product_name)}"
-              loading="lazy"
-              onerror="this.src='/images/defaults/product.svg'"
-            >
-          </a>
-
-          <!-- Remove from wishlist button -->
+        <a class="card-image-wrap" href="/product.html?id=${item.product_id}" aria-label="${escapeHTML(item.product_name)}">
+          <img
+            class="card-image"
+            src="${escapeHTML(item.product_image || "/images/defaults/product.svg")}"
+            alt="${escapeHTML(item.product_name)}"
+            loading="lazy"
+            onerror="this.src='/images/defaults/product.svg'"
+          >
+          <div class="card-overlay" aria-hidden="true">
+            <span class="btn light small">Voir le bijou</span>
+          </div>
           <button
             type="button"
             class="card-wishlist-btn active"
             data-id="${item.product_id}"
             aria-label="Retirer ${escapeHTML(item.product_name)} des favoris"
             title="Retirer des favoris"
-            style="opacity: 1; transform: translateY(0);"
           >♥</button>
-
-          <!-- Hover overlay -->
-          <a class="card-overlay" href="/product.html?id=${item.product_id}" aria-hidden="true">
-            <span class="btn light small">Voir le bijou</span>
-          </a>
-        </div>
+        </a>
 
         <div class="card-body">
           <p class="product-category">${escapeHTML(item.category_name || "")}</p>
           <h3 class="product-name">
             <a href="/product.html?id=${item.product_id}">${escapeHTML(item.product_name)}</a>
           </h3>
-          <p class="product-price">${formatPrice(item.price)}</p>
+          <p class="product-price">${typeof formatPrice === 'function' ? formatPrice(item.price) : item.price + ' DA'}</p>
         </div>
 
       </article>
@@ -93,17 +87,17 @@ async function loadWishlist() {
             guestWishlist = guestWishlist.filter(itemId => String(itemId) !== String(id));
             localStorage.setItem("velora_wishlist", JSON.stringify(guestWishlist));
           }
-          showToast("Bijou retiré de vos favoris.");
+          if (typeof showToast === "function") showToast("Bijou retiré de vos favoris.");
           loadWishlist();
         } catch (error) {
-          showToast(error.message, "error");
+          if (typeof showToast === "function") showToast(error.message, "error");
         }
       });
     });
 
   } catch (error) {
     container.innerHTML = "";
-    showAlert(msgEl, escapeHTML(error.message), "error");
+    if (typeof showAlert === "function") showAlert(msgEl, escapeHTML(error.message), "error");
   }
 }
 

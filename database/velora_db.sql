@@ -36,6 +36,7 @@ CREATE TABLE categories (
     description TEXT DEFAULT NULL,
     image VARCHAR(255) DEFAULT NULL,
     is_visible TINYINT(1) NOT NULL DEFAULT 1,
+    show_in_footer TINYINT(1) NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

@@ -1069,25 +1069,36 @@ function renderCategoriesGrid(categories) {
     return;
   }
 
-  grid.innerHTML = categories.map(cat => `
-    <div class="category-card">
-      <img class="category-card-image" src="${escapeHTML(cat.image || "/images/defaults/product.svg")}" alt="${escapeHTML(cat.name)}" onerror="this.src='/images/defaults/product.svg'">
-      <div class="category-card-body">
-        <div class="category-card-name">${escapeHTML(cat.name)}</div>
-        <div class="category-card-count">${cat.total_products || 0} produit(s)</div>
-        <div class="category-card-actions">
-          <button class="btn outline small" onclick="openCategoryModal(${cat.id})" type="button">Modifier</button>
-          <button class="btn danger small" onclick="deleteCategory(${cat.id}, '${escapeHTML(cat.name.replace(/'/g, "\\\\'"))}')" type="button">Supprimer</button>
+  grid.innerHTML = categories.map(cat => {
+    const isFooter = cat.show_in_footer === 1 || cat.show_in_footer === '1' || cat.show_in_footer === true;
+    const isHidden = cat.is_visible === 0 || cat.is_visible === '0' || cat.is_visible === false;
+
+    return `
+      <div class="category-card" ${isHidden ? 'style="opacity:0.65;"' : ''}>
+        <img class="category-card-image" src="${escapeHTML(cat.image || "/images/defaults/product.svg")}" alt="${escapeHTML(cat.name)}" onerror="this.src='/images/defaults/product.svg'">
+        <div class="category-card-body">
+          <div class="category-card-name">${escapeHTML(cat.name)}</div>
+          <div class="category-card-count" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+            <span>${cat.total_products || 0} produit(s)</span>
+            ${isFooter ? `<span class="badge" style="background:var(--cream-dark,#EFE9DE);color:var(--charcoal,#111);font-size:0.7rem;padding:2px 6px;border-radius:4px;">Footer</span>` : ""}
+            ${isHidden ? `<span class="badge muted" style="font-size:0.7rem;padding:2px 6px;">Masquée</span>` : ""}
+          </div>
+          <div class="category-card-actions">
+            <button class="btn outline small" onclick="openCategoryModal(${cat.id})" type="button">Modifier</button>
+            <button class="btn danger small" onclick="deleteCategory(${cat.id}, '${escapeHTML(cat.name.replace(/'/g, "\\\\'"))}')" type="button">Supprimer</button>
+          </div>
         </div>
       </div>
-    </div>
-  `).join("");
+    `;
+  }).join("");
 }
 
 function openCategoryModal(categoryId) {
   const form = document.getElementById("category-form");
   const title = document.getElementById("category-modal-title");
   const msgEl = document.getElementById("category-form-messages");
+  const footerToggle = document.getElementById("cat-show-footer");
+  const visibleToggle = document.getElementById("cat-visible");
 
   if (!form) return;
 
@@ -1099,6 +1110,8 @@ function openCategoryModal(categoryId) {
 
   if (!categoryId) {
     if (title) title.textContent = "Ajouter une catégorie";
+    if (footerToggle) footerToggle.checked = false;
+    if (visibleToggle) visibleToggle.checked = true;
     openModal("category-modal");
     return;
   }
@@ -1113,6 +1126,13 @@ function openCategoryModal(categoryId) {
   document.getElementById("cat-id").value = cat.id;
   document.getElementById("cat-name").value = cat.name || "";
   document.getElementById("cat-description").value = cat.description || "";
+
+  if (footerToggle) {
+    footerToggle.checked = cat.show_in_footer === 1 || cat.show_in_footer === '1' || cat.show_in_footer === true;
+  }
+  if (visibleToggle) {
+    visibleToggle.checked = cat.is_visible !== 0 && cat.is_visible !== '0' && cat.is_visible !== false;
+  }
 
   if (cat.image) {
     document.getElementById("cat-existing-image").value = cat.image;
@@ -1158,6 +1178,8 @@ function setupCategoryForm() {
     try {
       const formData = new FormData(form);
       formData.delete("id");
+      formData.set("show_in_footer", document.getElementById("cat-show-footer")?.checked ? "1" : "0");
+      formData.set("is_visible", document.getElementById("cat-visible")?.checked ? "1" : "0");
 
       const url = id ? `/api/admin/categories/${id}` : "/api/admin/categories";
       const method = id ? "PUT" : "POST";
@@ -1358,6 +1380,23 @@ async function loadSettingsValues() {
     setVal("set-free-threshold", settings.free_threshold);
     setVal("set-announcement", settings.announcement);
     setVal("set-announcement-bg", settings.announcement_bg || "gold");
+    
+    const btnVal = settings.announcement_btn_text !== undefined ? settings.announcement_btn_text : "Découvrir";
+    const btnSelect = document.getElementById("set-announcement-btn-select");
+    const btnCustom = document.getElementById("set-announcement-btn-custom");
+    const btnCustomWrap = document.getElementById("set-announcement-btn-custom-wrap");
+    if (btnSelect) {
+      const presets = ["Découvrir", "Profiter de l'offre", "Voir la collection", "Commander maintenant", "En savoir plus", ""];
+      if (presets.includes(btnVal)) {
+        btnSelect.value = btnVal;
+        if (btnCustomWrap) btnCustomWrap.style.display = "none";
+        if (btnCustom) btnCustom.value = "";
+      } else {
+        btnSelect.value = "__custom__";
+        if (btnCustomWrap) btnCustomWrap.style.display = "";
+        if (btnCustom) btnCustom.value = btnVal;
+      }
+    }
 
     const enabledCheckbox = document.getElementById("set-announcement-enabled");
     if (enabledCheckbox) {
@@ -1372,6 +1411,16 @@ async function loadSettingsValues() {
   } catch (e) {
     // ignore
   }
+}
+
+function getAnnouncementBtnText() {
+  const btnSelect = document.getElementById("set-announcement-btn-select");
+  const btnCustom = document.getElementById("set-announcement-btn-custom");
+  if (!btnSelect) return "Découvrir";
+  if (btnSelect.value === "__custom__") {
+    return btnCustom ? btnCustom.value : "";
+  }
+  return btnSelect.value;
 }
 
 function updateAnnouncementLivePreview() {
@@ -1393,9 +1442,11 @@ function updateAnnouncementLivePreview() {
 
   const text = textInput?.value || "Livraison offerte dès 5 000 DA · Paiement à la livraison";
   const bgTheme = bgSelect?.value || "gold";
+  const btnText = getAnnouncementBtnText();
 
   previewBar.className = `announcement-bar announcement-theme-${bgTheme}`;
-  previewBar.innerHTML = `<span>${escapeHTML(text)}</span> <a href="#" onclick="return false;" style="margin-left:8px;text-decoration:underline;">Découvrir</a>`;
+  const btnHtml = btnText.trim() ? `<a href="#" onclick="return false;" style="margin-left:8px;text-decoration:underline;">${escapeHTML(btnText.trim())}</a>` : "";
+  previewBar.innerHTML = `<span>${escapeHTML(text)}</span> ${btnHtml}`;
 }
 
 function renderWilayasTable(wilayas) {
@@ -1469,14 +1520,27 @@ function setupSettings() {
     });
   }
 
-  // Live preview events for announcement bar
   const setAnnText = document.getElementById("set-announcement");
   const setAnnBg = document.getElementById("set-announcement-bg");
+  const setAnnBtnSelect = document.getElementById("set-announcement-btn-select");
+  const setAnnBtnCustom = document.getElementById("set-announcement-btn-custom");
+  const setAnnBtnCustomWrap = document.getElementById("set-announcement-btn-custom-wrap");
   const setAnnTgl = document.getElementById("set-announcement-enabled");
 
   setAnnText?.addEventListener("input", updateAnnouncementLivePreview);
   setAnnBg?.addEventListener("change", updateAnnouncementLivePreview);
   setAnnTgl?.addEventListener("change", updateAnnouncementLivePreview);
+
+  setAnnBtnSelect?.addEventListener("change", (e) => {
+    if (e.target.value === "__custom__") {
+      if (setAnnBtnCustomWrap) setAnnBtnCustomWrap.style.display = "";
+      if (setAnnBtnCustom) setAnnBtnCustom.focus();
+    } else {
+      if (setAnnBtnCustomWrap) setAnnBtnCustomWrap.style.display = "none";
+    }
+    updateAnnouncementLivePreview();
+  });
+  setAnnBtnCustom?.addEventListener("input", updateAnnouncementLivePreview);
 
   const announcementForm = document.getElementById("settings-announcement-form");
   if (announcementForm) {
@@ -1486,6 +1550,7 @@ function setupSettings() {
         settings: {
           announcement: document.getElementById("set-announcement")?.value.trim(),
           announcement_bg: document.getElementById("set-announcement-bg")?.value,
+          announcement_btn_text: getAnnouncementBtnText().trim(),
           announcement_enabled: document.getElementById("set-announcement-enabled")?.checked ? "1" : "0"
         }
       });

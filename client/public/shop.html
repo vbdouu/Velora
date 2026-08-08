@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="/css/style.css">
   <script defer src="/js/api.js"></script>
   <script defer src="/js/auth.js"></script>
+  <script defer src="/js/toast.js"></script>
+  <script defer src="/js/quickview.js"></script>
   <script defer src="/js/shop.js"></script>
 </head>
 <body data-active="shop">
@@ -16,16 +18,11 @@
 
   <main class="page-main">
 
-    <!-- Page Header -->
-    <div class="section-cream">
-      <div class="container page-header">
-        <nav class="breadcrumb" aria-label="Fil d'Ariane">
-          <a href="/index.html">Accueil</a>
-          <span class="breadcrumb-sep" aria-hidden="true">◆</span>
-          <span>Boutique</span>
-        </nav>
-        <h1>Toute la collection</h1>
-        <p class="lead">Des pièces façonnées avec soin, pensées pour durer et conçues pour vous accompagner.</p>
+    <!-- Shop Header (Compact & Editorial) -->
+    <div class="container shop-header">
+      <div class="shop-header-row">
+        <h1 class="shop-title" id="shop-main-title">Toute la collection</h1>
+        <p class="shop-count" id="products-count"></p>
       </div>
     </div>
 
@@ -35,7 +32,6 @@
 
         <!-- Sidebar Filters -->
         <aside class="shop-sidebar" aria-label="Filtres produits">
-
 
           <div class="shop-sidebar-section">
             <p class="shop-sidebar-title">Catégories</p>
@@ -58,24 +54,15 @@
 
         <!-- Products Area -->
         <div class="dashboard-content">
-          <div class="shop-controls" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: center;">
-            <p class="shop-count" id="products-count" style="margin: 0;"></p>
-            <form id="search-form" role="search" novalidate style="flex: 1; max-width: 320px;">
-              <div class="input-group">
-                <input
-                  type="search"
-                  id="search-input"
-                  placeholder="Rechercher un bijou..."
-                  aria-label="Rechercher des bijoux"
-                  autocomplete="off"
-                >
-                <button type="submit" class="btn" aria-label="Lancer la recherche" style="padding-inline: 0; color: var(--gold); font-size: 0.85rem;">→</button>
-              </div>
-            </form>
-            <div id="shop-messages" style="flex-basis: 100%;"></div>
-          </div>
-          <div class="products-grid" id="shop-products" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
+          <div id="shop-messages"></div>
+          <div class="products-grid" id="shop-products">
             <div class="loading-state" style="grid-column: 1 / -1;">Chargement des bijoux…</div>
+          </div>
+          <div class="shop-pagination-wrap" id="shop-pagination" style="display:none;">
+            <button type="button" class="btn outline shop-load-more-btn" id="btn-load-more">
+              <span>Afficher plus de créations</span>
+            </button>
+            <p class="shop-pagination-info" id="pagination-info"></p>
           </div>
         </div>
 

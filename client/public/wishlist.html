@@ -1,36 +1,43 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mes Favoris — Velora</title>
+  <meta name="description" content="Mes favoris Velora - Retrouvez les bijoux que vous avez sauvegardes.">
+  <title>Mes Favoris - Velora</title>
   <link rel="icon" type="image/svg+xml" href="/images/defaults/favicon.svg">
   <link rel="stylesheet" href="/css/style.css">
   <script defer src="/js/api.js"></script>
   <script defer src="/js/auth.js"></script>
+  <script defer src="/js/toast.js"></script>
   <script defer src="/js/wishlist.js"></script>
 </head>
 <body data-active="wishlist">
   <div id="site-header"></div>
 
   <main class="page-main">
-    <div class="container">
-      <div class="page-header">
+
+    <div class="section-cream">
+      <div class="container page-header">
         <nav class="breadcrumb" aria-label="Fil d'Ariane">
           <a href="/index.html">Accueil</a>
-          <span class="breadcrumb-sep" aria-hidden="true">◆</span>
-          <span>Mes Favoris</span>
+          <span class="breadcrumb-sep" aria-hidden="true">&#9670;</span>
+          <span>Mes favoris</span>
         </nav>
         <h1>Mes favoris</h1>
-        <p class="lead">Les pièces que vous avez mises de côté.</p>
+        <p class="lead">Les bijoux que vous avez mis de cote.</p>
       </div>
+    </div>
+
+    <div class="container" style="padding-top: clamp(28px, 4vw, 48px); padding-bottom: clamp(48px, 6vw, 80px);">
 
       <div id="wishlist-messages"></div>
 
-      <div class="wishlist-products-grid section" style="padding-top: 0;" id="wishlist-grid">
-        <div class="loading-state" style="grid-column: 1 / -1;">Chargement de vos favoris…</div>
+      <div class="products-grid" id="wishlist-grid">
+        <div class="loading-state" style="grid-column: 1 / -1;">Chargement de vos favoris...</div>
       </div>
     </div>
+
   </main>
 
   <div id="site-footer"></div>

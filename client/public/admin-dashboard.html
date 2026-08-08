@@ -534,8 +534,32 @@
                                             <option value="dark">🖤 Chic Noir (Intense)</option>
                                             <option value="rose">🌸 Rose Nude (Douceur)</option>
                                             <option value="nude">🕯️ Crème Soie (Épuré)</option>
+                                            <option value="emerald">👑 Émeraude Impériale (Vert & Or)</option>
+                                            <option value="sapphire">💎 Saphir Nuit (Bleu & Argent)</option>
+                                            <option value="ruby">🍷 Rubis Velvet (Bordeaux & Rose Gold)</option>
+                                            <option value="champagne">🥂 Champagne (Crème & Bronze)</option>
+                                            <option value="sage">🌿 Sauge & Bronze (Naturel & Chic)</option>
                                         </select>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="set-announcement-btn-select">Texte du bouton</label>
+                                        <select class="form-select" id="set-announcement-btn-select">
+                                            <option value="Découvrir">Découvrir</option>
+                                            <option value="Profiter de l'offre">Profiter de l'offre</option>
+                                            <option value="Voir la collection">Voir la collection</option>
+                                            <option value="Commander maintenant">Commander maintenant</option>
+                                            <option value="En savoir plus">En savoir plus</option>
+                                            <option value="">Aucun bouton (Masquer)</option>
+                                            <option value="__custom__">✏️ Personnalisé...</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="set-announcement-btn-custom-wrap" style="display:none;margin-top:12px;text-align:center;">
+                                    <label class="form-label" for="set-announcement-btn-custom" style="font-size:0.78rem;color:var(--muted);">Saisie du texte personnalisé :</label>
+                                    <input class="form-input" type="text" id="set-announcement-btn-custom"
+                                        placeholder="Ex: Profiter de -20%, Réserver votre bijou..."
+                                        style="max-width:480px;margin:4px auto 0;text-align:center;">
                                 </div>
                                 
                                 <div class="form-group" style="margin-top:12px;">
@@ -596,7 +620,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="form-actions" style="display:flex;justify-content:flex-end;">
+                                <div class="form-actions" style="margin-top:16px;">
                                     <button class="btn primary" type="submit">Enregistrer les tarifs des Wilayas & Seuil</button>
                                 </div>
                             </form>
@@ -872,6 +896,29 @@
                         </label>
                         <input class="form-file-input" type="file" id="cat-image" name="image"
                             accept="image/jpeg,image/png,image/webp">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group form-toggle-group">
+                            <label class="form-toggle-label" for="cat-show-footer">
+                                <span>Afficher dans le Footer</span>
+                                <span class="form-toggle-hint">Visible dans le pied de page</span>
+                            </label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="cat-show-footer" name="show_in_footer" value="1">
+                                <span class="toggle-track"></span>
+                            </label>
+                        </div>
+                        <div class="form-group form-toggle-group">
+                            <label class="form-toggle-label" for="cat-visible">
+                                <span>Catégorie visible</span>
+                                <span class="form-toggle-hint">Affichée dans la boutique</span>
+                            </label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="cat-visible" name="is_visible" value="1" checked>
+                                <span class="toggle-track"></span>
+                            </label>
+                        </div>
                     </div>
 
                     <div class="form-actions">
