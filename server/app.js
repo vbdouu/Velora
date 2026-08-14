@@ -30,6 +30,9 @@ const contactRoutes = require("./routes/contactRoutes");
 
 const app = express();
 
+// Faire confiance au reverse proxy (Render, Heroku, etc.) pour récupérer la bonne IP client
+app.set("trust proxy", 1);
+
 // ── Rate Limiters ──
 
 // Brute-force protection on login: max 10 attempts per 15 minutes per IP

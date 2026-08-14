@@ -594,6 +594,7 @@
   line-height: 1.35;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   min-height: 2.7em;
@@ -2399,12 +2400,6 @@
 .product-card:nth-child(7) { animation-delay: 0.28s; }
 .product-card:nth-child(8) { animation-delay: 0.32s; }
 
-/* ── Wishlist button active glow ── */
-
-.card-wishlist-btn.active {
-  color: var(--danger) !important;
-  text-shadow: 0 0 8px rgba(139, 58, 58, 0.35);
-}
 
 /* ── Announcement bar subtle shadow ── */
 
